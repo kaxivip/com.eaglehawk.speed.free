@@ -202,6 +202,12 @@ export function SettingsPage({
           )
         })}
 
+        {/* ICP 备案号 */}
+        <div className="mt-8 text-center">
+          <p className="text-[10px] text-muted-foreground/40">沪ICP备2021006153号</p>
+          <p className="text-[10px] text-muted-foreground/30 mt-1">v1.0.0/100-HUAWEI</p>
+        </div>
+
       </div>
 
       {/* Clear cache confirmation dialog */}
