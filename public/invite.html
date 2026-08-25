@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>雄鹰加速器 — 一触即飞 畅游全球</title>
+  <meta name="description" content="雄鹰加速器，真免费真提速，每天免费用，不花钱也能快。全球节点低延迟，一键智能加速。">
+  <meta name="theme-color" content="#0b101c">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #00d4ff;
+      --accent:  #ff9500;
+      --green:   #00c96e;
+      --bg:      #0b101c;
+      --card:    rgba(255,255,255,0.05);
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e5e7eb;
+      --muted:   rgba(229,231,235,0.55);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ======== HERO ======== */
+    .hero {
+      background: linear-gradient(180deg, #071428 0%, #0b1c3a 60%, #0b101c 100%);
+      padding: 52px 24px 44px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content:'';
+      position:absolute; width:360px; height:360px;
+      background: radial-gradient(circle, rgba(0,212,255,0.1), transparent 70%);
+      top:-100px; left:50%; transform:translateX(-50%);
+      pointer-events:none;
+    }
+    .logo-wrap { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:24px; }
+    .logo-wrap img { width:68px; height:68px; border-radius:18px; box-shadow:0 8px 32px rgba(0,212,255,0.25); }
+    .app-name h1 { font-size:24px; font-weight:900; color:#fff; letter-spacing:2px; text-align:left; }
+    .app-name p  { font-size:13px; color:var(--primary); margin-top:3px; text-align:left; }
+    .hero-tagline { font-size:32px; font-weight:900; color:#fff; line-height:1.3; margin-bottom:12px; letter-spacing:1px; }
+    .hero-tagline em { color:var(--primary); font-style:normal; }
+    .hero-sub { font-size:16px; color:var(--muted); margin-bottom:28px; }
+    .star-row { display:flex; align-items:center; justify-content:center; gap:8px; }
+    .stars { color:#ffb733; font-size:20px; letter-spacing:3px; }
+    .star-text { font-size:14px; color:var(--muted); }
+
+    /* ======== 下载按钮 ======== */
+    .download-wrap {
+      background: linear-gradient(180deg, #0b101c 0%, #0f1624 100%);
+      padding: 36px 24px 28px;
+      text-align: center;
+    }
+    .btn-download {
+      display: flex; align-items:center; justify-content:center; gap:12px;
+      width:100%; max-width:360px; margin:0 auto 14px;
+      padding:18px 28px; border-radius:18px;
+      font-size:18px; font-weight:800; color:#fff;
+      text-decoration:none; border:none; cursor:pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-download:active { transform:scale(0.97); }
+    .btn-android { background:linear-gradient(135deg,#00c96e,#00a855); box-shadow:0 8px 28px rgba(0,200,100,0.4); }
+    .btn-ios     { background:linear-gradient(135deg,var(--primary),#006fa8); box-shadow:0 8px 28px rgba(0,200,255,0.4); }
+    .btn-win     { background:linear-gradient(135deg,#5b8cff,#3a5fcd); box-shadow:0 8px 28px rgba(91,140,255,0.4); }
+    .btn-default { background:linear-gradient(135deg,var(--primary),#006fa8); box-shadow:0 8px 28px rgba(0,200,255,0.4); }
+    .btn-icon { font-size:26px; line-height:1; flex-shrink:0; }
+    .btn-text { text-align:left; line-height:1.3; }
+    .btn-sub  { font-size:13px; opacity:0.8; font-weight:400; display:block; }
+    .other-link { margin-top:4px; font-size:14px; color:var(--muted); }
+    .other-link a { color:var(--primary); text-decoration:underline; }
+
+    @keyframes glow-blue  { 0%,100%{box-shadow:0 8px 28px rgba(0,200,255,0.4)} 50%{box-shadow:0 10px 38px rgba(0,200,255,0.7)} }
+    @keyframes glow-green { 0%,100%{box-shadow:0 8px 28px rgba(0,200,100,0.4)} 50%{box-shadow:0 10px 38px rgba(0,200,100,0.7)} }
+    .btn-ios,.btn-default { animation:glow-blue  2.5s ease-in-out infinite; }
+    .btn-android          { animation:glow-green 2.5s ease-in-out infinite; }
+
+    /* ======== 邀请码横幅 ======== */
+    .invite-banner { display:none; background:linear-gradient(135deg,#1a0e00,#2d1800); padding:20px 24px; }
+    .invite-banner.show { display:block; }
+    .invite-inner {
+      background:rgba(255,149,0,0.1); border:1px solid rgba(255,149,0,0.28);
+      border-radius:16px; padding:18px;
+    }
+    .invite-label { font-size:13px; color:rgba(255,183,51,0.8); margin-bottom:10px; text-align:center; }
+    .invite-code-row { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:10px; }
+    .invite-code { font-size:28px; font-weight:900; color:#ffb733; letter-spacing:5px; text-shadow:0 0 16px rgba(255,183,51,0.5); }
+    .copy-btn {
+      font-size:13px; color:#ff9500;
+      background:rgba(255,149,0,0.15); border:1px solid rgba(255,149,0,0.3);
+      border-radius:20px; padding:5px 14px; cursor:pointer;
+    }
+    .copy-btn:active { background:rgba(255,149,0,0.3); }
+    .invite-tip { font-size:15px; color:rgba(255,200,120,0.95); text-align:center; line-height:1.6; }
+    .invite-tip strong { color:#ffb733; }
+
+    /* ======== 通用内容区 ======== */
+    .content { background:#0f1624; padding:0 24px 80px; }
+    .section-gap { height:40px; }
+    .section-title {
+      font-size:19px; font-weight:800; color:#fff;
+      margin-bottom:18px; display:flex; align-items:center; gap:10px;
+    }
+    .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ======== 免费大横幅 ======== */
+    .free-banner {
+      background:linear-gradient(135deg,#0a1e10,#0f2d18);
+      border:1px solid rgba(0,200,100,0.22);
+      border-radius:20px; padding:28px 20px; text-align:center; margin-bottom:0;
+    }
+    .free-banner .big { font-size:30px; font-weight:900; color:var(--green); margin-bottom:10px; text-shadow:0 0 20px rgba(0,200,110,0.4); }
+    .free-banner p { font-size:15px; color:rgba(229,231,235,0.75); line-height:1.7; }
+
+    /* ======== 数据亮点 ======== */
+    .stats-row { display:flex; gap:12px; }
+    .stat-item {
+      flex:1; background:var(--card); border:1px solid var(--border);
+      border-radius:14px; padding:18px 10px; text-align:center;
+    }
+    .stat-num  { font-size:26px; font-weight:900; color:var(--primary); line-height:1; }
+    .stat-unit { font-size:12px; color:var(--primary); }
+    .stat-label{ font-size:12px; color:var(--muted); margin-top:6px; }
+
+    /* ======== 幻灯 ======== */
+    .slideshow-wrap { position:relative; user-select:none; margin-bottom:0; }
+    .slides-container { overflow:hidden; border-radius:20px; }
+    .slides-track {
+      display:flex; transition:transform 0.4s cubic-bezier(.25,.46,.45,.94);
+      will-change:transform;
+    }
+    .slide { flex:0 0 100%; position:relative; }
+    .slide img { width:100%; display:block; border-radius:20px; object-fit:cover; }
+    /* 指示点 */
+    .slide-dots { display:flex; justify-content:center; gap:7px; margin-top:14px; }
+    .dot {
+      width:7px; height:7px; border-radius:50%;
+      background:rgba(255,255,255,0.2); cursor:pointer; transition:all 0.25s;
+    }
+    .dot.active { background:var(--primary); width:22px; border-radius:4px; }
+    /* 左右箭头 */
+    .slide-arrow {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:36px; height:36px; border-radius:50%;
+      background:rgba(0,0,0,0.45); backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,0.15);
+      display:flex; align-items:center; justify-content:center;
+      font-size:16px; color:rgba(255,255,255,0.85); cursor:pointer;
+      z-index:5; transition:background 0.2s;
+    }
+    .slide-arrow:active { background:rgba(0,0,0,0.7); }
+    .slide-prev { left:10px; }
+    .slide-next { right:10px; }
+
+    /* ======== 产品特点 ======== */
+    .features-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .feature-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:16px; padding:20px 16px;
+    }
+    .f-icon  { font-size:30px; margin-bottom:10px; }
+    .f-title { font-size:15px; font-weight:700; color:#fff; margin-bottom:6px; }
+    .f-desc  { font-size:13px; color:var(--muted); line-height:1.6; }
+
+    /* ======== 步骤 ======== */
+    .steps { display:flex; flex-direction:column; gap:12px; }
+    .step  { display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
+    .step-num {
+      width:30px; height:30px; flex-shrink:0;
+      background:linear-gradient(135deg,var(--primary),#006fa8);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-size:14px; font-weight:800; color:#fff;
+    }
+    .s-title { font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
+    .s-desc  { font-size:13px; color:var(--muted); }
+
+    /* ======== 用户评价 ======== */
+    .reviews { display:flex; flex-direction:column; gap:14px; }
+    .review-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; }
+    .review-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .reviewer { display:flex; align-items:center; gap:10px; }
+    .avatar {
+      width:38px; height:38px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:18px;
+      background:linear-gradient(135deg,rgba(0,212,255,0.18),rgba(0,212,255,0.05));
+      border:1px solid rgba(0,212,255,0.15);
+    }
+    .r-name { font-size:14px; font-weight:600; color:#fff; }
+    .r-tag  { font-size:12px; color:var(--muted); margin-top:2px; }
+    .r-stars{ color:#ffb733; font-size:14px; letter-spacing:1px; }
+    .review-text { font-size:14px; color:var(--muted); line-height:1.7; }
+    .review-text strong { color:#fff; }
+
+    /* ======== 底部CTA ======== */
+    .bottom-cta { text-align:center; padding:20px 0 30px; }
+    .bottom-cta h2 { font-size:24px; font-weight:900; color:#fff; margin-bottom:10px; }
+    .bottom-cta p  { font-size:15px; color:var(--muted); margin-bottom:24px; }
+
+    /* ======== 固定下载栏 ======== */
+    .sticky-bar {
+      position:fixed; bottom:0; left:0; right:0;
+      background:rgba(11,16,28,0.96); backdrop-filter:blur(14px);
+      border-top:1px solid var(--border);
+      padding:12px 24px; padding-bottom:calc(12px + env(safe-area-inset-bottom));
+      z-index:100;
+    }
+    .sticky-inner { display:flex; align-items:center; gap:14px; max-width:480px; margin:0 auto; }
+    .s-app { font-size:16px; font-weight:700; color:#fff; }
+    .s-sub { font-size:13px; color:var(--muted); margin-top:2px; }
+    .sticky-btn {
+      flex-shrink:0; padding:12px 26px; border-radius:14px;
+      font-size:15px; font-weight:800; color:#fff; text-decoration:none;
+      background:linear-gradient(135deg,var(--primary),#006fa8);
+      box-shadow:0 4px 18px rgba(0,200,255,0.4);
+      transition:transform 0.15s;
+    }
+    .sticky-btn.android-btn { background:linear-gradient(135deg,#00c96e,#00a855); box-shadow:0 4px 18px rgba(0,200,100,0.4); }
+    .sticky-btn.win-btn     { background:linear-gradient(135deg,#5b8cff,#3a5fcd); box-shadow:0 4px 18px rgba(91,140,255,0.4); }
+    .sticky-btn:active { transform:scale(0.96); }
+
+    .divider { height:1px; background:var(--border); margin:36px 0; }
+    .safe-bottom { height:90px; }
+
+    @media (max-width:360px) {
+      .hero-tagline { font-size:26px; }
+      .features-grid { grid-template-columns:1fr; }
+      .stat-num { font-size:22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="logo-wrap">
+    <img src="images/logo_icon.png" alt="雄鹰加速器">
+    <div class="app-name">
+      <h1>雄鹰加速器</h1>
+      <p>一触即飞 · 畅游全球</p>
+    </div>
+  </div>
+  <div class="hero-tagline">网速慢？<em>免费</em>解决<br>一键提速，秒通全球</div>
+  <div class="hero-sub">装机必备 · 真免费 · 无套路</div>
+  <div class="star-row">
+    <span class="stars">★★★★★</span>
+    <span class="star-text">10万+ 用户都在用</span>
+  </div>
+</div>
+
+<!-- ===== 下载按钮 ===== -->
+<div class="download-wrap">
+  <a href="#" id="android-btn" class="btn-download btn-android" style="display:none">
+    <span class="btn-icon">🤖</span>
+    <span class="btn-text">安卓下载</span>
+  </a>
+  <a href="#" id="ios-btn" class="btn-download btn-ios" style="display:none">
+    <span class="btn-icon">🍎</span>
+    <span class="btn-text">iOS 下载</span>
+  </a>
+  <a href="#" id="win-btn" class="btn-download btn-win" style="display:none">
+    <span class="btn-icon">🖥️</span>
+    <span class="btn-text">Windows 下载</span>
+  </a>
+  <a href="https://eaglehawk.info" id="default-btn" class="btn-download btn-default">
+    <span class="btn-icon">🚀</span>
+    <span class="btn-text">立即免费下载</span>
+  </a>
+  <div class="other-link">其他平台？<a href="https://eaglehawk.info" target="_blank">点击前往官网</a></div>
+</div>
+
+<!-- ===== 邀请码横幅 ===== -->
+<div class="invite-banner" id="invite-banner">
+  <div class="invite-inner">
+    <div class="invite-label">🎁 你的朋友送你一份专属福利</div>
+    <div class="invite-code-row">
+      <div class="invite-code" id="invite-code-text" onclick="copyCode()" title="点击复制" style="cursor:pointer;">-</div>
+      <button class="copy-btn" onclick="copyCode()">复制</button>
+    </div>
+    <div class="invite-tip">
+      下载安装后首次登录，输入邀请码 <strong id="invite-code-tip">-</strong><br>
+      立即赠送 <strong>100 积分</strong>，可兑换加速时长！
+    </div>
+  </div>
+</div>
+
+<!-- ===== 主内容 ===== -->
+<div class="content">
+  <div class="section-gap"></div>
+
+  <!-- 免费横幅 -->
+  <div class="free-banner">
+    <div class="big">🆓 永久免费 · 不骗人</div>
+    <p>每天都有免费时长<br>看个广告还能多赚加速时间<br>不充钱也能用得很爽</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 数据亮点 -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">8<span class="stat-unit">h</span></div>
+      <div class="stat-label">每日免费时长</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">50<span class="stat-unit">+</span></div>
+      <div class="stat-label">全球节点</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">10<span class="stat-unit">年</span></div>
+      <div class="stat-label">跨境运营经验</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 应用截图幻灯 -->
+  <div class="section-title">📸 应用截图</div>
+  <div class="slideshow-wrap">
+    <div class="slides-container">
+      <div class="slides-track" id="slidesTrack">
+        <div class="slide"><img src="screenshots/shot-1.png" alt="开屏页"></div>
+        <div class="slide"><img src="screenshots/shot-2.png" alt="真免费真提速"></div>
+        <div class="slide"><img src="screenshots/shot-3.png" alt="国外加速国内漫游"></div>
+        <div class="slide"><img src="screenshots/shot-4.png" alt="跨境十年良心之作"></div>
+        <div class="slide"><img src="screenshots/shot-5.png" alt="专业团队支持"></div>
+      </div>
+    </div>
+    <div class="slide-arrow slide-prev" onclick="slideMove(-1)">‹</div>
+    <div class="slide-arrow slide-next" onclick="slideMove(1)">›</div>
+    <div class="slide-dots" id="slideDots"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 产品特点 -->
+  <div class="section-title">🔥 为什么选雄鹰</div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="f-icon">⚡</div>
+      <div class="f-title">一键提速</div>
+      <div class="f-desc">打开即用，无需配置，3秒内连上全球节点</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-icon">🌍</div>
+      <div class="f-title">多区域节点</div>
+      <div class="f-desc">国外加速、国内漫游都有，自动优选最快线路</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-icon">💰</div>
+      <div class="f-title">免费赚时长</div>
+      <div class="f-desc">完成任务、看广告、邀请好友，都能换加速时长</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-icon">🔒</div>
+      <div class="f-title">加密通道</div>
+      <div class="f-desc">数据全程加密传输，不记录不监控你的内容</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-icon">📱</div>
+      <div class="f-title">精准加速</div>
+      <div class="f-desc">选你要加速的App，流量不浪费，手机不发热</div>
+    </div>
+    <div class="feature-card">
+      <div class="f-icon">🏅</div>
+      <div class="f-title">十年良心品质</div>
+      <div class="f-desc">跨境老团队运营，稳定不跑路，服务有保障</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 使用步骤 -->
+  <div class="section-title">📲 怎么用</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="s-title">下载安装雄鹰加速器</div>
+        <div class="s-desc">点击上方按钮，30秒安装完成</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="s-title">注册手机号，输入邀请码领积分</div>
+        <div class="s-desc">首次登录输入朋友邀请码，马上到账100积分</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="s-title">一键连接，开始加速</div>
+        <div class="s-desc">选好线路，点击大按钮，网速秒变流畅</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 用户评价 -->
+  <div class="section-title">💬 用户怎么说</div>
+  <div class="reviews">
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="avatar">🙋‍♂️</div>
+          <div><div class="r-name">游戏玩家阿杰</div><div class="r-tag">安卓用户 · 2周前</div></div>
+        </div>
+        <div class="r-stars">★★★★★</div>
+      </div>
+      <div class="review-text">真的<strong>不花钱也能用</strong>，每天看两个广告就够了，游戏延迟从200ms降到30ms，好评！</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="avatar">👩‍💼</div>
+          <div><div class="r-name">出差族小薇</div><div class="r-tag">iOS用户 · 1个月前</div></div>
+        </div>
+        <div class="r-stars">★★★★★</div>
+      </div>
+      <div class="review-text">出差在外，<strong>微信视频和刷视频都快了很多</strong>。最重要是真的免费，没有隐藏收费，用了半年很放心。</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="avatar">👨‍💻</div>
+          <div><div class="r-name">程序员老王</div><div class="r-tag">安卓用户 · 3周前</div></div>
+        </div>
+        <div class="r-stars">★★★★☆</div>
+      </div>
+      <div class="review-text">用了雄鹰<strong>代码拉取速度快了十几倍</strong>，而且只加速指定App，不影响其他网络，赞一个。</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="avatar">🧑‍🎓</div>
+          <div><div class="r-name">留学生小楠</div><div class="r-tag">iOS用户 · 2个月前</div></div>
+        </div>
+        <div class="r-stars">★★★★★</div>
+      </div>
+      <div class="review-text">在国外用它连回国内，<strong>看国内视频、刷微博超级丝滑</strong>，朋友也用我的邀请码下了，都说好用。</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 底部CTA -->
+  <div class="bottom-cta">
+    <h2>🚀 现在下载，立刻免费用</h2>
+    <p>10万人的选择 · 真免费 · 不踩坑</p>
+    <a href="https://eaglehawk.info" id="bottom-btn" class="btn-download btn-default" style="max-width:320px; margin:0 auto;">
+      <span class="btn-icon">⬇️</span>
+      <span class="btn-text">免费下载雄鹰加速器</span>
+    </a>
+  </div>
+
+  <!-- 备案号 -->
+  <div style="text-align:center; padding:20px 0 10px;">
+    <a href="https://beian.miit.gov.cn/" target="_blank"
+      style="font-size:12px; color:rgba(229,231,235,0.3); text-decoration:none;">
+      沪ICP备10215341号-15
+    </a>
+  </div>
+
+  <div class="safe-bottom"></div>
+</div>
+
+<!-- ===== 固定下载栏 ===== -->
+<div class="sticky-bar">
+  <div class="sticky-inner">
+    <div style="flex:1">
+      <div class="s-app">雄鹰加速器</div>
+      <div class="s-sub" id="sticky-sub">免费 · 一键提速</div>
+    </div>
+    <a href="https://eaglehawk.info" id="sticky-btn" class="sticky-btn">免费下载</a>
+  </div>
+</div>
+
+<script>
+  // ===== URL参数 =====
+  const params = new URLSearchParams(location.search);
+  const inviteCode = params.get('invite');
+  if (inviteCode) {
+    document.getElementById('invite-banner').classList.add('show');
+    document.getElementById('invite-code-text').textContent = inviteCode;
+    document.getElementById('invite-code-tip').textContent  = inviteCode;
+    document.getElementById('sticky-sub').textContent = '输入邀请码 ' + inviteCode + ' 领100积分';
+  }
+
+  // ===== 下载地址 =====
+  const URLS = {
+    android: 'https://eaglehawk.info/free.apk',
+    ios:     'https://eaglehawk.info/free.ipa',
+    win:     'https://eaglehawk.info/free.win',
+    default: 'https://eaglehawk.info/'
+  };
+  function withInvite(url) { return url; }
+
+  // ===== 平台检测 =====
+  const ua = navigator.userAgent || '';
+  const isIOS     = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isAndroid = /android/i.test(ua);
+  const isWin     = /windows/i.test(ua);
+
+  const elAndroid = document.getElementById('android-btn');
+  const elIos     = document.getElementById('ios-btn');
+  const elWin     = document.getElementById('win-btn');
+  const elDefault = document.getElementById('default-btn');
+  const stickyBtn = document.getElementById('sticky-btn');
+  const bottomBtn = document.getElementById('bottom-btn');
+
+  function setMainDownload(url, label, cls) {
+    elDefault.style.display = 'none';
+    stickyBtn.href = url;
+    stickyBtn.className = 'sticky-btn ' + cls;
+    bottomBtn.href = url;
+  }
+
+  if (isAndroid) {
+    elAndroid.style.display = 'flex';
+    elAndroid.href = URLS.android;
+    setMainDownload(URLS.android, '安卓下载', 'android-btn');
+  } else if (isIOS) {
+    elIos.style.display = 'flex';
+    elIos.href = URLS.ios;
+    setMainDownload(URLS.ios, 'iOS下载', '');
+  } else if (isWin) {
+    elWin.style.display = 'flex';
+    elWin.href = URLS.win;
+    setMainDownload(URLS.win, 'Windows下载', 'win-btn');
+  }
+  // 其他平台：保留 default 按钮 → eaglehawk.info
+
+  // ===== 复制邀请码 =====
+  function copyCode() {
+    const code = inviteCode || document.getElementById('invite-code-text').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code).then(() => toast('邀请码已复制！'));
+    } else {
+      const el = document.createElement('textarea');
+      el.value = code; document.body.appendChild(el); el.select();
+      document.execCommand('copy'); document.body.removeChild(el);
+      toast('邀请码已复制！');
+    }
+  }
+  function toast(msg) {
+    const t = document.createElement('div');
+    t.textContent = msg;
+    Object.assign(t.style, {
+      position:'fixed', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
+      background:'rgba(0,0,0,0.82)', color:'#fff', padding:'12px 28px',
+      borderRadius:'28px', fontSize:'15px', zIndex:'9999',
+      backdropFilter:'blur(10px)', pointerEvents:'none'
+    });
+    document.body.appendChild(t);
+    setTimeout(() => document.body.removeChild(t), 2000);
+  }
+
+  // ===== 幻灯片 =====
+  let current = 0;
+  const total  = 5;
+  const track  = document.getElementById('slidesTrack');
+  const dotsEl = document.getElementById('slideDots');
+
+  // 创建指示点
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    current = (n + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+  function slideMove(dir) { goTo(current + dir); }
+
+  // 触摸滑动
+  let tx = 0;
+  track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) slideMove(dx < 0 ? 1 : -1);
+  }, {passive:true});
+
+  // 自动轮播
+  setInterval(() => slideMove(1), 3500);
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* === Eagle Accelerator - Golden Eagle Dynasty === */
+
+    /* Core palette - 深空墨蓝 */
+    --background: 225 40% 3%;
+    --foreground: 35 20% 92%;
+
+    /* Card surfaces */
+    --card: 225 30% 14%;
+    --card-foreground: 35 20% 90%;
+
+    /* Popover */
+    --popover: 225 32% 7%;
+    --popover-foreground: 35 20% 90%;
+
+    /* Primary - Amber Gold (金雕羽色) */
+    --primary: 38 92% 55%;
+    --primary-foreground: 30 30% 5%;
+
+    /* Secondary - Warm brown */
+    --secondary: 30 40% 18%;
+    --secondary-foreground: 35 20% 90%;
+
+    /* Muted */
+    --muted: 225 18% 16%;
+    --muted-foreground: 220 12% 55%;
+
+    /* Accent - Warm Orange (鹰喙暖橙) */
+    --accent: 25 85% 50%;
+    --accent-foreground: 30 20% 95%;
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & inputs */
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 38 92% 55%;
+
+    /* Border radius */
+    --radius: 0.75rem;
+
+    /* === Custom: Depth Tokens === */
+    --ocean-deep: 225 40% 3%;
+    --ocean-mid: 225 32% 8%;
+    --ocean-surface: 35 85% 48%;
+    --ocean-glow: 38 92% 58%;
+
+    /* === Custom: Status Tokens === */
+    --status-connected: 150 80% 50%;
+    --status-disconnected: 30 90% 55%;
+    --status-warning: 45 90% 55%;
+  }
+
+  /* Light mode not used for this app, but provided for completeness */
+  .light {
+    --background: 200 20% 98%;
+    --foreground: 220 35% 5%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 35% 5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 35% 5%;
+    --primary: 35 90% 46%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 35% 93%;
+    --secondary-foreground: 30 30% 12%;
+    --muted: 35 20% 94%;
+    --muted-foreground: 30 10% 45%;
+    --accent: 25 85% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 35 20% 87%;
+    --input: 35 20% 87%;
+    --ring: 35 90% 46%;
+    --ocean-deep: 35 30% 94%;
+    --ocean-mid: 35 20% 90%;
+    --ocean-surface: 35 90% 46%;
+    --ocean-glow: 38 92% 52%;
+    --status-connected: 150 70% 42%;
+    --status-disconnected: 25 85% 50%;
+    --status-warning: 40 85% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  }
+}
+
+@layer components {
+  /* Ocean gradient backgrounds */
+  .bg-ocean-gradient {
+    background: linear-gradient(180deg, hsl(225 40% 3%) 0%, hsl(225 34% 6%) 40%, hsl(225 28% 10%) 100%);
+  }
+
+  .bg-ocean-radial {
+    background: radial-gradient(ellipse at 50% 0%, hsl(35 30% 11%) 0%, hsl(225 40% 3%) 70%);
+  }
+
+  .bg-ocean-deep-gradient {
+    background: linear-gradient(180deg, hsl(225 40% 3%) 0%, hsl(225 36% 5%) 50%, hsl(225 30% 9%) 100%);
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(38 92% 55% / 0.2), 0 0 60px hsl(38 92% 55% / 0.08);
+  }
+
+  .glow-connected {
+    box-shadow: 0 0 20px hsl(150 80% 50% / 0.25), 0 0 60px hsl(150 80% 50% / 0.1);
+  }
+
+  /* Glass card effect */
+  .glass-card {
+    background: hsl(225 25% 15% / 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(38 25% 32% / 0.4);
+  }
+
+  /* Gradient text */
+  .text-gradient-cyan {
+    background: linear-gradient(135deg, hsl(38 95% 62%), hsl(25 85% 52%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-premium {
+    background: linear-gradient(135deg, hsl(45 95% 65%), hsl(25 85% 50%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Animated background particles */
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: hsl(38 92% 60% / 0.4);
+    border-radius: 50%;
+    animation: float-up 3s ease-out infinite;
+  }
+
+  /* Connect button styles */
+  .connect-ring {
+    background: conic-gradient(
+      from 0deg,
+      hsl(38 92% 55%),
+      hsl(25 85% 50%),
+      hsl(38 92% 55%)
+    );
+  }
+
+  .connect-ring-connected {
+    background: conic-gradient(
+      from 0deg,
+      hsl(38 92% 55%),
+      hsl(25 85% 50%),
+      hsl(38 92% 55%)
+    );
+  }
+
+  /* Shimmer effect for loading states */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(225 25% 9%) 0%,
+      hsl(225 20% 15%) 50%,
+      hsl(225 25% 9%) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Rocket launch animation */
+  @keyframes rocket-launch {
+    0% { transform: translateY(0); }
+    20% { transform: translateY(-10px); }
+    50% { transform: translateY(-6px); }
+    80% { transform: translateY(-8px); }
+    100% { transform: translateY(-7px); }
+  }
+
+  .animate-rocket-launch {
+    animation: rocket-launch 0.7s ease-out forwards;
+  }
+
+  /* Flame flicker animation */
+  @keyframes flame-flicker {
+    0%, 100% { opacity: 0.85; transform: scaleY(1) scaleX(1); }
+    20% { opacity: 1; transform: scaleY(1.15) scaleX(0.88); }
+    40% { opacity: 0.75; transform: scaleY(0.92) scaleX(1.08); }
+    60% { opacity: 0.95; transform: scaleY(1.08) scaleX(0.92); }
+    80% { opacity: 0.8; transform: scaleY(0.95) scaleX(1.05); }
+  }
+
+  .animate-flame-flicker {
+    animation: flame-flicker 0.35s ease-in-out infinite;
+    transform-origin: 114px 196px;
+  }
+
+  /* Speed lines animation */
+  @keyframes speed-lines {
+    0%, 100% { opacity: 0.15; transform: translateY(0); }
+    50% { opacity: 0.4; transform: translateY(4px); }
+  }
+
+  .animate-speed-lines {
+    animation: speed-lines 1.2s ease-in-out infinite;
+  }
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(225 40% 3%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(225 18% 20%);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(38 25% 32%);
+}

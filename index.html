@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>雄鹰加速器</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif; }
+
+  /* Phone frame */
+  .phone {
+    width: 100%; height: 100%; max-width: 430px; margin: 0 auto;
+    background: #f2f2f7; display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 54px; display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 28px 8px; font-size: 15px; font-weight: 600; color: #000;
+  }
+  .status-bar .right { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .status-bar .signal { display: flex; gap: 1.5px; align-items: flex-end; }
+  .status-bar .signal span { width: 3px; background: #000; border-radius: 1px; }
+  .status-bar .battery { width: 25px; height: 12px; border: 1.5px solid #000; border-radius: 3px; position: relative; }
+  .status-bar .battery::after { content:''; position: absolute; right: -4px; top: 3px; width: 2px; height: 5px; background: #000; border-radius: 0 1px 1px 0; }
+  .status-bar .battery-fill { width: 70%; height: 100%; background: #000; border-radius: 1.5px; }
+
+  /* Wallpaper area */
+  .wallpaper {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 20px; position: relative;
+    background: linear-gradient(180deg, #f8f8fc 0%, #eeeef5 50%, #e8e8f0 100%);
+  }
+
+  /* Widget - clock */
+  .clock-widget {
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-radius: 22px; padding: 20px 36px; margin-bottom: 48px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  .clock-widget .time { font-size: 48px; font-weight: 200; color: #000; letter-spacing: -1px; line-height: 1.1; }
+  .clock-widget .date { font-size: 15px; color: #8e8e93; margin-top: 4px; font-weight: 400; }
+
+  /* App grid */
+  .app-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px 16px;
+    width: 100%; max-width: 360px; padding: 0 8px;
+  }
+
+  /* App icon */
+  .app-icon {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; transition: transform 0.15s ease;
+  }
+  .app-icon:active { transform: scale(0.88); }
+
+  .app-icon .icon-box {
+    width: 62px; height: 62px; border-radius: 15px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .app-icon .icon-box img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Placeholder icons (colored squares) */
+  .icon-placeholder {
+    width: 62px; height: 62px; border-radius: 15px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 26px;
+  }
+
+  .app-icon .name {
+    font-size: 11px; color: #333; text-align: center; line-height: 1.2;
+    max-width: 72px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* Highlighted app (雄鹰加速器) */
+  .app-icon.highlight .icon-box {
+    box-shadow: 0 4px 16px rgba(0,150,255,0.25);
+    animation: gentle-pulse 3s ease-in-out infinite;
+  }
+  .app-icon.highlight .name { font-weight: 600; color: #007aff; }
+
+  @keyframes gentle-pulse {
+    0%, 100% { box-shadow: 0 4px 16px rgba(0,150,255,0.2); }
+    50% { box-shadow: 0 6px 24px rgba(0,150,255,0.35); }
+  }
+
+  /* Bottom dock */
+  .dock {
+    padding: 12px 24px 20px; display: flex; justify-content: center; gap: 24px;
+    background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-top: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .dock .app-icon .name { display: none; }
+
+  /* Page indicator */
+  .page-dots {
+    display: flex; justify-content: center; gap: 6px; padding: 8px 0 4px;
+  }
+  .page-dots span { width: 6px; height: 6px; border-radius: 50%; background: #c7c7cc; }
+  .page-dots span.active { background: #007aff; }
+
+  /* Home indicator */
+  .home-indicator {
+    display: flex; justify-content: center; padding: 8px 0 12px;
+  }
+  .home-indicator span { width: 134px; height: 5px; border-radius: 3px; background: #000; opacity: 0.2; }
+
+  /* Launch overlay */
+  .launch-overlay {
+    position: fixed; inset: 0; z-index: 1000; opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
+    background: #000;
+  }
+  .launch-overlay.active { opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span id="clock">12:27</span>
+    <div class="right">
+      <div class="signal">
+        <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span>
+      </div>
+      <span style="font-weight:500">5G</span>
+      <div class="battery"><div class="battery-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- Main wallpaper area -->
+  <div class="wallpaper">
+    <!-- Clock widget -->
+    <div class="clock-widget">
+      <div class="time" id="bigClock">12:27</div>
+      <div class="date" id="dateDisplay">7月1日 周三</div>
+    </div>
+
+    <!-- App grid -->
+    <div class="app-grid">
+      <!-- Row 1 -->
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#34c759">📧</div>
+        <span class="name">邮件</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#007aff">🌐</div>
+        <span class="name">Safari</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#ff9500">📷</div>
+        <span class="name">相机</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#ff3b30">🗺️</div>
+        <span class="name">地图</span>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#5856d6">🎵</div>
+        <span class="name">音乐</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#5ac8fa">📁</div>
+        <span class="name">文件</span>
+      </div>
+      <div class="app-icon highlight" id="eagleIcon">
+        <div class="icon-box">
+          <img src="./images/fy-logo002.png" alt="雄鹰加速器">
+        </div>
+        <span class="name">雄鹰加速器</span>
+      </div>
+      <div class="app-icon highlight" id="eagleIcon2">
+        <div class="icon-box">
+          <img src="./images/fy-logo002.png" alt="雄鹰加速器">
+        </div>
+        <span class="name">雄鹰加速器</span>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#af52de">⚙️</div>
+        <span class="name">设置</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#ff2d55">📅</div>
+        <span class="name">日历</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#00c7be">🕐</div>
+        <span class="name">时钟</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#ff9f0a">📐</div>
+        <span class="name">计算器</span>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#30b0c7">🏥</div>
+        <span class="name">健康</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#bf5af2">📝</div>
+        <span class="name">备忘录</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#64d2ff">🌤️</div>
+        <span class="name">天气</span>
+      </div>
+      <div class="app-icon">
+        <div class="icon-placeholder" style="background:#ff3b30">🗺️</div>
+        <span class="name">地图</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page dots -->
+  <div class="page-dots">
+    <span></span><span></span><span class="active"></span><span></span><span></span>
+  </div>
+
+  <!-- Dock -->
+  <div class="dock">
+    <div class="app-icon">
+      <div class="icon-placeholder" style="background:#34c759;width:54px;height:54px;border-radius:13px">📞</div>
+    </div>
+    <div class="app-icon">
+      <div class="icon-placeholder" style="background:#007aff;width:54px;height:54px;border-radius:13px">💬</div>
+    </div>
+    <div class="app-icon">
+      <div class="icon-placeholder" style="background:#ff9500;width:54px;height:54px;border-radius:13px">🧭</div>
+    </div>
+    <div class="app-icon">
+      <div class="icon-placeholder" style="background:#ff3b30;width:54px;height:54px;border-radius:13px">🎶</div>
+    </div>
+  </div>
+
+  <!-- Home indicator -->
+  <div class="home-indicator"><span></span></div>
+</div>
+
+<!-- Launch overlay -->
+<div class="launch-overlay" id="launchOverlay"></div>
+
+<script>
+  // Update clock
+  function updateClock() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var time = h + ':' + m;
+    document.getElementById('clock').textContent = time;
+    document.getElementById('bigClock').textContent = time;
+
+    var months = now.getMonth() + 1;
+    var days = now.getDate();
+    var weekDays = ['周日','周一','周二','周三','周四','周五','周六'];
+    document.getElementById('dateDisplay').textContent = months + '月' + days + '日 ' + weekDays[now.getDay()];
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // Click to launch app
+  function launchApp() {
+    document.getElementById('launchOverlay').classList.add('active');
+    setTimeout(function() {
+      window.location.href = './app.html';
+    }, 600);
+  }
+  document.getElementById('eagleIcon').addEventListener('click', launchApp);
+  document.getElementById('eagleIcon2').addEventListener('click', launchApp);
+</script>
+</body>
+</html>

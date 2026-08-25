@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>手机桌面</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  body { display: flex; justify-content: center; align-items: center; }
+
+  .desktop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 100vh;
+  }
+
+  .desktop img.bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .app-entry {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease;
+  }
+  .app-entry:active {
+    transform: scale(0.9);
+  }
+
+  .app-entry .icon-wrap {
+    width: 13.5%;
+    aspect-ratio: 1;
+    border-radius: 22%;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .app-entry .icon-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .app-entry .label {
+    margin-top: 4px;
+    font-size: 2.4vw;
+    color: rgba(255,255,255,0.88);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 200, 255, 0.3);
+    animation: ripple-out 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes ripple-out {
+    0% { width: 0; height: 0; opacity: 1; }
+    100% { width: 200px; height: 200px; opacity: 0; margin-left: -100px; margin-top: -100px; }
+  }
+
+  .launch-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .launch-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+</style>
+</head>
+<body>
+<div class="desktop" id="desktop">
+  <img class="bg" src="/desktop_bg.jpg" alt="desktop">
+
+  <!-- 雄鹰加速器 icon - ima 右边 (Row 2, Column 3) -->
+  <!-- ima center at ~40% width, ~43.5% height; place icon at ~58.5% width, same row -->
+  <div class="app-entry" id="eagleIcon" style="left: 58.5%; top: 40%;">
+    <div class="icon-wrap">
+      <img src="./images/fy-logo001.png" alt="雄鹰加速器">
+    </div>
+    <span class="label">雄鹰加速器</span>
+  </div>
+</div>
+
+<!-- App launch splash -->
+<div class="launch-overlay" id="launchOverlay">
+  <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#050a18 0%,#0a1428 40%,#0f1e32 100%);">
+    <div style="display:flex;flex-direction:column;align-items:center;animation:fadeInUp 0.6s ease-out;">
+      <div style="width:90px;height:90px;border-radius:20px;overflow:hidden;box-shadow:0 0 30px rgba(0,200,255,0.3);margin-bottom:24px;">
+        <img src="./images/fy-logo001.png" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <div style="font-size:26px;font-weight:bold;background:linear-gradient(135deg,#F6A823,#EC6D13);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;">雄鹰加速器</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.5);letter-spacing:4px;font-family:-apple-system,'PingFang SC',sans-serif;">一触即飞 畅游全球</div>
+      <div style="margin-top:40px;width:30px;height:3px;border-radius:2px;background:rgba(255,255,255,0.1);overflow:hidden;">
+        <div style="width:60%;height:100%;background:#00d4ff;border-radius:2px;animation:shimmer 1.2s ease-in-out infinite;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var eagleIcon = document.getElementById('eagleIcon');
+  var overlay = document.getElementById('launchOverlay');
+
+  eagleIcon.addEventListener('click', function(e) {
+    var ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    ripple.style.left = e.clientX + 'px';
+    ripple.style.top = e.clientY + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(function() { ripple.remove(); }, 600);
+
+    setTimeout(function() {
+      overlay.classList.add('active');
+      setTimeout(function() {
+        window.location.href = './app.html';
+      }, 2000);
+    }, 300);
+  });
+</script>
+</body>
+</html>
