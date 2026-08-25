@@ -85,13 +85,13 @@ export function BusinessCoopPage({ onBack }: BusinessCoopPageProps) {
           <p className="text-sm font-semibold text-foreground mb-1">联系我们</p>
           <p className="text-xs text-muted-foreground mb-4">发送邮件说明您的合作意向，我们会尽快回复。</p>
           <a
-            href="mailto:app@unitedcloud.net"
+            href="mailto:bianmeng.net@outlook.com"
             className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl bg-primary/10 hover:bg-primary/15 active:scale-[0.98] transition-all"
           >
             <Mail className="w-4 h-4 text-primary flex-shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium text-foreground">商务邮箱</p>
-              <p className="text-[11px] text-primary/80 mt-0.5">app@unitedcloud.net</p>
+              <p className="text-[11px] text-primary/80 mt-0.5">bianmeng.net@outlook.com</p>
             </div>
           </a>
         </div>

@@ -1,23 +1,13 @@
 import { cn } from "@/lib/utils"
 import { useEffect, useState, useCallback } from "react"
 import { Maximize2, Minimize2 } from "lucide-react"
-import { type TaskLayout } from "@/pages/TaskCenterPage"
 
 interface PhoneFrameProps {
   children: React.ReactNode
   className?: string
-  taskLayout?: TaskLayout
-  onTaskLayoutChange?: (l: TaskLayout) => void
 }
 
-const TASK_LAYOUTS: { key: TaskLayout; label: string; desc: string }[] = [
-  { key: "original",    label: "原版",   desc: "经典线性堆叠" },
-  { key: "task-stream", label: "任务流", desc: "看广告置顶，转化优先" },
-  { key: "account",     label: "账户",   desc: "资产感知，激发行动" },
-  { key: "tabs",        label: "分区",   desc: "三栏标签，聚焦清晰" },
-]
-
-export function PhoneFrame({ children, className, taskLayout, onTaskLayoutChange }: PhoneFrameProps) {
+export function PhoneFrame({ children, className }: PhoneFrameProps) {
   const [isMobile, setIsMobile] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
@@ -70,10 +60,8 @@ export function PhoneFrame({ children, className, taskLayout, onTaskLayoutChange
     )
   }
 
-  const showLayoutPanel = !!taskLayout && !!onTaskLayoutChange
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white p-4 gap-6">
+    <div className="flex items-center justify-center min-h-screen bg-white p-4">
       {/* 手机框 */}
       <div
         className={cn(
@@ -92,45 +80,6 @@ export function PhoneFrame({ children, className, taskLayout, onTaskLayoutChange
           {children}
         </div>
       </div>
-
-      {/* 布局切换面板（只在免费会员页显示） */}
-      {showLayoutPanel && (
-        <div className="flex flex-col gap-2 w-44">
-          <p className="text-xs font-semibold text-gray-400 tracking-wider uppercase mb-1">
-            免费会员页布局
-          </p>
-          {TASK_LAYOUTS.map((l) => (
-            <button
-              key={l.key}
-              onClick={() => onTaskLayoutChange(l.key)}
-              className={cn(
-                "w-full text-left px-3.5 py-3 rounded-2xl border transition-all duration-200",
-                taskLayout === l.key
-                  ? "bg-gray-900 border-gray-700 shadow-md"
-                  : "bg-gray-50 border-gray-200 hover:bg-gray-100"
-              )}
-            >
-              <div className="flex items-center justify-between mb-0.5">
-                <span className={cn(
-                  "text-sm font-semibold",
-                  taskLayout === l.key ? "text-white" : "text-gray-800"
-                )}>
-                  {l.label}
-                </span>
-                {taskLayout === l.key && (
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                )}
-              </div>
-              <p className={cn(
-                "text-[11px] leading-tight",
-                taskLayout === l.key ? "text-gray-400" : "text-gray-500"
-              )}>
-                {l.desc}
-              </p>
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   )
 }

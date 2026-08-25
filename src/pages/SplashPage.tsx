@@ -50,7 +50,7 @@ export function SplashPage({ onFinish }: SplashPageProps) {
           </p>
           <div className="flex items-center gap-2 mt-3">
             <span className="text-[11px] font-medium text-primary/70 bg-primary/10 border border-primary/20 px-3 py-1 rounded-full tracking-wide">装机必备</span>
-            <span className="text-[11px] font-medium text-accent/70 bg-accent/10 border border-accent/20 px-3 py-1 rounded-full tracking-wide">出国必装</span>
+            <span className="text-[11px] font-medium text-accent/70 bg-accent/10 border border-accent/20 px-3 py-1 rounded-full tracking-wide">跨境专用</span>
             <span className="text-[11px] font-medium text-foreground/40 bg-foreground/5 border border-foreground/10 px-3 py-1 rounded-full tracking-wide">海外常备</span>
           </div>
         </div>

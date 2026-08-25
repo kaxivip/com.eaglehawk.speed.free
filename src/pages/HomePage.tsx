@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AccelerateButton } from "@/components/AccelerateButton"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import {
   Globe, Smartphone, ChevronRight, Share2, Signal, Zap, Pause, RefreshCw,
 } from "lucide-react"

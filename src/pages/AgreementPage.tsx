@@ -91,7 +91,7 @@ export function AgreementPage({ type, onBack }: AgreementPageProps) {
                 <p>
                   如您对本隐私协议有任何疑问，请通过以下方式联系我们：
                 </p>
-                <p className="mt-1">邮箱：privacy@eaglehawk.info</p>
+                <p className="mt-1">邮箱：bianmeng.net@outlook.com</p>
               </section>
             </>
           ) : (

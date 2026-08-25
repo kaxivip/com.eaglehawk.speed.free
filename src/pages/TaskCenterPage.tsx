@@ -17,12 +17,8 @@ import {
   MessageCircle,
   Copy,
 } from "lucide-react"
-import { LayoutTaskStream, LayoutAccount, LayoutTabs } from "@/pages/TaskCenterLayouts"
-
-export type TaskLayout = "original" | "task-stream" | "account" | "tabs"
 
 interface TaskCenterPageProps {
-  layout?: TaskLayout
   points: number
   memberMinutes: number
   onToggleMember?: () => void
@@ -46,7 +42,7 @@ export interface TaskItem {
   isLink?: boolean
 }
 
-export function TaskCenterPage({ layout = "original", points, memberMinutes, onToggleMember, onEarnPoints, onOpenShare, onOpenOtherBenefits, onOpenPointsExchange, onOpenPointsHistory }: TaskCenterPageProps) {
+export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPoints, onOpenShare, onOpenOtherBenefits, onOpenPointsExchange, onOpenPointsHistory }: TaskCenterPageProps) {
   const [adWatchedCount, setAdWatchedCount] = useState(0)
   const [isWatchingAd, setIsWatchingAd] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false)
@@ -147,20 +143,6 @@ export function TaskCenterPage({ layout = "original", points, memberMinutes, onT
 
   // const totalEarnable = tasks.reduce((sum, t) => sum + t.reward, 0)
   // const earned = tasks.filter((t) => t.completed).reduce((sum, t) => sum + t.reward, 0)
-
-  // 公共 props 包，传给各布局
-  const sharedProps = {
-    points, memberMinutes, isMember,
-    adWatchedCount, isWatchingAd, adDone, adTodayEarned, AD_MAX, AD_REWARD,
-    tasks, showCopyToast, showConfirmDialog,
-    onToggleMember, onOpenShare, onOpenOtherBenefits, onOpenPointsExchange, onOpenPointsHistory,
-    handleWatchAd, handleTask, handleCopyQQGroup,
-    setShowConfirmDialog,
-  }
-
-  if (layout === "task-stream") return <LayoutTaskStream {...sharedProps} />
-  if (layout === "account")     return <LayoutAccount     {...sharedProps} />
-  if (layout === "tabs")        return <LayoutTabs         {...sharedProps} />
 
   return (
     <div className="w-full h-full bg-ocean-gradient flex flex-col relative overflow-hidden">

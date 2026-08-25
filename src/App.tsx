@@ -7,7 +7,7 @@ import { HomePage } from "@/pages/HomePage"
 import { ModeSelectPage } from "@/pages/ModeSelectPage"
 import { LineSelectPage, type LineId } from "@/pages/LineSelectPage"
 import { AppSelectPage } from "@/pages/AppSelectPage"
-import { TaskCenterPage, type TaskLayout } from "@/pages/TaskCenterPage"
+import { TaskCenterPage } from "@/pages/TaskCenterPage"
 import { ProfilePage } from "@/pages/ProfilePage"
 import { AgreementPage } from "@/pages/AgreementPage"
 import { SettingsPage } from "@/pages/SettingsPage"
@@ -24,7 +24,7 @@ import { HelpCenterPage } from "@/pages/HelpCenterPage"
 import { BusinessCoopPage } from "@/pages/BusinessCoopPage"
 import { AddToHomeScreenPrompt } from "@/components/AddToHomeScreenPrompt"
 
-type AppStage = "splash" | "privacy" | "main" | "login" | "app-select" | "agreement" | "settings" | "account-delete" | "mode-select" | "line-select" | "share" | "share-detail" | "other-benefits" | "task-submit" | "points-exchange" | "points-history" | "other-platforms" | "about" | "help-center" | "business-coop"
+type AppStage = "splash" | "privacy" | "main" | "app-select" | "agreement" | "settings" | "account-delete" | "mode-select" | "line-select" | "share" | "share-detail" | "other-benefits" | "task-submit" | "points-exchange" | "points-history" | "other-platforms" | "about" | "help-center" | "business-coop"
 
 export default function App() {
   const hasAgreed = false // DEV: always show privacy modal
@@ -36,14 +36,14 @@ export default function App() {
   const [currentMode, setCurrentMode] = useState<"global" | "app">("global")
   const [currentLine, setCurrentLine] = useState<LineId>("smart")
   const [selectedApps, setSelectedApps] = useState<string[]>(["youtube", "telegram", "chatgpt"])
-  const [memberMinutes, setMemberMinutes] = useState(0) // DEV: 0=非会员, >0=会员
+  const [memberMinutes, setMemberMinutes] = useState(45) // DEV: 0=非会员, >0=会员
   const [points, setPoints] = useState(120)
   const [agreementType, setAgreementType] = useState<"privacy" | "service">("privacy")
   const [agreementReturnTo, setAgreementReturnTo] = useState<AppStage>("main")
   const [submitTaskId, setSubmitTaskId] = useState(0)
   const [remainingSeconds, setRemainingSeconds] = useState(0)
   const [hasClaimedInviteReward, setHasClaimedInviteReward] = useState(false)
-  const [taskLayout, setTaskLayout] = useState<TaskLayout>("original")
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // 积分流水记录（mock 50条）
@@ -131,6 +131,7 @@ export default function App() {
 
   const handleLogin = useCallback((inviteCode?: string) => {
     setIsLoggedIn(true)
+    setShowLoginModal(false)
     if (inviteCode && inviteCode.trim().length >= 4 && !hasClaimedInviteReward) {
       setHasClaimedInviteReward(true)
       setPoints((prev) => prev + 100)
@@ -303,34 +304,28 @@ export default function App() {
               </div>
             </div>
       
-            {/* Bottom fixed actions - sticky button bar */}
-            <div className="relative z-10 px-6 pt-3 pb-[calc(env(safe-area-inset-bottom,0px)+16px)] bg-gradient-to-t from-background/60 via-background/30 to-transparent backdrop-blur-sm">
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    // refuse - can't use app
-                    setStage("splash");
-                  }}
-                  className="flex-1 h-12 rounded-xl border border-border/40 text-sm text-muted-foreground hover:bg-foreground/5 active:scale-[0.98] transition-all"
-                >
-                  不同意
-                </button>
-                <button
-                  onClick={() => {
-                    localStorage.setItem("privacy_agreed", "1");
-                    setStage("main");
-                  }}
-                  className="flex-[1.4] h-12 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold shadow-[0_4px_20px_hsl(38_92%_55%/0.3)] hover:opacity-95 active:scale-[0.98] transition-all"
-                >
-                  同意并继续
-                </button>
-              </div>
+            {/* Bottom fixed actions */}
+            <div className="absolute bottom-[150px] left-0 right-0 z-10 px-6 flex flex-col items-center gap-6">
+              <button
+                onClick={() => {
+                  localStorage.setItem("privacy_agreed", "1");
+                  setStage("main");
+                }}
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold shadow-[0_4px_20px_hsl(38_92%_55%/0.3)] hover:opacity-95 active:scale-[0.98] transition-all"
+              >
+                同意并继续
+              </button>
+              <button
+                onClick={() => {
+                  setStage("splash");
+                }}
+                className="text-xs text-muted-foreground/60 hover:text-muted-foreground active:scale-[0.98] transition-all"
+              >
+                不同意
+              </button>
             </div>
           </div>
         )
-
-      case "login":
-        return <LoginPage onLogin={handleLogin} onBack={() => setStage("main")} />
 
       case "app-select":
         return (
@@ -357,8 +352,6 @@ export default function App() {
             onShowAgreement={(type) => handleShowAgreement(type, "settings")}
             onAccountDelete={() => setStage("account-delete")}
             onLogout={handleLogout}
-            onOpenOtherPlatforms={() => setStage("other-platforms")}
-            onOpenAbout={() => setStage("about")}
           />
         )
 
@@ -403,8 +396,6 @@ export default function App() {
             onBack={() => setStage("main")}
             onSubmitTask={handleSubmitTask}
             onClaimReward={(_taskId: number, reward: number) => handleEarnPoints(reward, "福利任务奖励")}
-            shareCount={3}
-            onOpenShare={() => setStage("share")}
           />
         )
 
@@ -495,7 +486,6 @@ export default function App() {
               )}
               {currentPage === "tasks" && (
                 <TaskCenterPage
-                  layout={taskLayout}
                   points={points}
                   memberMinutes={memberMinutes}
                   onToggleMember={handleToggleMember}
@@ -511,7 +501,7 @@ export default function App() {
                   isLoggedIn={isLoggedIn}
                   points={points}
                   memberMinutes={memberMinutes}
-                  onLogin={() => setStage("login")}
+                  onLogin={() => setShowLoginModal(true)}
                   onNavigate={setCurrentPage}
                   onOpenSettings={handleOpenSettings}
                   onOpenShare={handleOpenShare}
@@ -531,13 +521,13 @@ export default function App() {
   const animateClass = stage === "main" ? "" : "animate-slide-in-right"
 
   return (
-    <PhoneFrame
-      taskLayout={currentPage === "tasks" ? taskLayout : undefined}
-      onTaskLayoutChange={currentPage === "tasks" ? setTaskLayout : undefined}
-    >
+    <PhoneFrame>
       <div key={stage} className={`w-full h-full ${animateClass}`}>
         {renderContent()}
       </div>
+      {showLoginModal && (
+        <LoginPage onLogin={handleLogin} onClose={() => setShowLoginModal(false)} />
+      )}
       <AddToHomeScreenPrompt />
     </PhoneFrame>
   )

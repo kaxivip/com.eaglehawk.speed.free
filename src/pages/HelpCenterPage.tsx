@@ -183,7 +183,7 @@ export function HelpCenterPage({ onBack }: HelpCenterPageProps) {
           <p className="text-xs text-muted-foreground/60">
             没找到答案？联系客服
           </p>
-          <p className="text-xs text-primary mt-1">support@eaglehawk.info</p>
+          <p className="text-xs text-primary mt-1">bianmeng.net@outlook.com</p>
         </div>
       </div>
     </div>

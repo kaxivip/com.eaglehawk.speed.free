@@ -105,7 +105,7 @@ export function AboutPage({ onBack }: AboutPageProps) {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">客服邮箱</p>
-                  <p className="text-xs text-primary font-mono">support@eaglehawk.info</p>
+                  <p className="text-xs text-primary font-mono">bianmeng.net@outlook.com</p>
                 </div>
               </div>
             </CardContent>
