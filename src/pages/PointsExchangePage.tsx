@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { ChevronLeft, ChevronDown, Clock, Coins, CheckCircle2, Lock, Crown } from "lucide-react"
+import { ChevronLeft, ChevronDown, Clock, Coins, CheckCircle2, Lock, Crown, Rocket } from "lucide-react"
 
 interface PointsExchangePageProps {
   points: number
@@ -17,7 +17,7 @@ interface MembershipProduct {
   popular?: boolean
   badge?: string
   memberDayOnly?: boolean
-  theme?: "crimson" | "violet"
+  theme?: "amber" | "teal"
 }
 
 const PRODUCTS: MembershipProduct[] = [
@@ -35,7 +35,7 @@ const MEMBER_DAY_PRODUCTS: MembershipProduct[] = [
     costPoints: 1000,
     badge: "每月8/18/28开放",
     memberDayOnly: true,
-    theme: "crimson",
+    theme: "amber",
   },
   {
     id: "member-day-24h",
@@ -44,7 +44,7 @@ const MEMBER_DAY_PRODUCTS: MembershipProduct[] = [
     costPoints: 500,
     badge: "每月8/18/28开放",
     memberDayOnly: true,
-    theme: "violet",
+    theme: "teal",
   },
 ]
 
@@ -254,7 +254,7 @@ function RegularProductCard({ product, points, forceEnoughPoints, exchanging, su
             <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${
               canAfford ? "bg-primary/10" : "bg-muted/50"
             }`}>
-              <Clock className={`w-5 h-5 ${canAfford ? "text-primary" : "text-muted-foreground"}`} />
+              <Rocket className={`w-5 h-5 ${canAfford ? "text-primary" : "text-muted-foreground"}`} />
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">{product.durationLabel}会员</p>
@@ -302,30 +302,30 @@ function MemberDayProductCard({ product, points, forceEnoughPoints, isMemberDay,
   const isAvailable = isMemberDay && canAfford
   const isDisabled = !isAvailable || isExchanging
 
-  const theme = product.theme === "violet"
+  const theme = product.theme === "teal"
     ? {
-        bg: "bg-gradient-to-br from-violet-600/85 via-purple-500/80 to-fuchsia-500/85",
-        border: "border-violet-400/50",
+        bg: "bg-gradient-to-br from-teal-600/85 via-cyan-500/80 to-blue-500/85",
+        border: "border-teal-400/50",
         iconBg: "bg-white/20",
         iconColor: "text-white",
         titleColor: "text-white",
-        pointsColor: "text-violet-100",
+        pointsColor: "text-teal-100",
         badgeBg: "bg-white/20",
         badgeText: "text-white",
         buttonBg: "bg-white",
-        buttonText: "text-violet-600",
+        buttonText: "text-teal-600",
       }
     : {
-        bg: "bg-gradient-to-br from-rose-600/85 via-red-500/80 to-orange-500/85",
-        border: "border-rose-400/50",
+        bg: "bg-gradient-to-br from-amber-600/85 via-orange-500/80 to-yellow-500/85",
+        border: "border-amber-400/50",
         iconBg: "bg-white/20",
         iconColor: "text-white",
         titleColor: "text-white",
-        pointsColor: "text-rose-100",
+        pointsColor: "text-amber-100",
         badgeBg: "bg-white/20",
         badgeText: "text-white",
         buttonBg: "bg-white",
-        buttonText: "text-rose-600",
+        buttonText: "text-amber-600",
       }
 
   return (
@@ -344,7 +344,7 @@ function MemberDayProductCard({ product, points, forceEnoughPoints, isMemberDay,
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3.5">
             <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${theme.iconBg}`}>
-              <Clock className={`w-5 h-5 ${theme.iconColor}`} />
+              <Rocket className={`w-5 h-5 ${theme.iconColor}`} />
             </div>
             <div>
               <p className={`text-sm font-bold ${theme.titleColor}`}>{product.durationLabel}会员</p>
