@@ -170,7 +170,7 @@ export function HomePage(p: HomePageProps) {
           </div>
 
           {/* 拇指黄金区：模式/线路 + CTA + 广告 */}
-          <div className="relative z-10 flex flex-col mt-auto px-5 pb-24 gap-3">
+          <div className="relative z-10 flex flex-col mt-[63px] px-5 pb-24 gap-3">
             <div className="flex gap-2">
               <button
                 onClick={p.onOpenModeSelect}
@@ -215,7 +215,9 @@ export function HomePage(p: HomePageProps) {
               <span>{p.isConnecting ? "连接中..." : "立即提速"}</span>
             </button>
 
-            <AdBanner />
+            <div className="mt-4">
+              <AdBanner />
+            </div>
           </div>
         </>
       )}
