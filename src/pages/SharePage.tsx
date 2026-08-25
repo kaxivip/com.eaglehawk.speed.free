@@ -13,7 +13,7 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
 
   const shareUrl = "https://ffish.cc/i/8k2m9x"
   const inviteCode = "12345678"
-  const shareText = `我在用雄鹰加速器，永久免费！一键畅游全球，现在注册还有新人礼包🎁 ${shareUrl}`
+  const shareText = `我在用雄鹰加速器，永久免费！一键畅游全球，用我的邀请码注册立享 10 倍积分（500 积分）🎁 ${shareUrl}`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareText).catch(() => {})
@@ -65,8 +65,8 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
               <Sparkles className="w-2.5 h-2.5 text-primary-foreground" />
             </div>
           </div>
-          <h3 className="text-base font-bold text-foreground mt-3">邀请好友，双方各得奖励</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">好友注册即送积分，赚的你也得</p>
+          <h3 className="text-base font-bold text-foreground mt-3">邀请好友注册，领 10 倍积分</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">好友用邀请码注册得 500 积分，你也有奖</p>
         </div>
 
         {/* Invite code card */}
@@ -75,6 +75,7 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
             <div className="flex items-center gap-3">
               <span className="text-xs text-foreground/50">我的邀请码</span>
               <span className="text-base font-bold tracking-wider text-status-warning">{inviteCode}</span>
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-status-warning/15 text-status-warning">10倍积分</span>
             </div>
             <button
               onClick={handleCopyCode}
@@ -119,12 +120,12 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
             {/* Rule 1 */}
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-lg bg-status-warning/15 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-xs font-bold text-status-warning">+500</span>
+                <span className="text-xs font-bold text-status-warning">10X</span>
               </div>
               <div>
-                <p className="text-sm font-semibold text-foreground">邀请注册送多500 积分</p>
+                <p className="text-sm font-semibold text-foreground">用邀请码注册 = 10 倍积分</p>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  好友注册登录，进入「免费会员→领取邀请奖励→输入邀请码」，立即再获赠 <span className="text-primary font-medium">500 积分</span>
+                  普通注册仅送 50 积分，输入邀请码直接翻 <span className="text-primary font-medium">10 倍 = 500 积分</span>
                 </p>
               </div>
             </div>
@@ -147,7 +148,7 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
             {/* Note */}
             <div className="mt-4 pt-3 border-t border-border/20">
               <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
-                * 普通用户自行注册仅送 50 积分，通过邀请注册可再多拿 500 积分
+                * 无邀请码注册仅得 50 积分；通过邀请码注册可获 50×10 = 500 积分，多赚 450 积分
               </p>
             </div>
           </CardContent>
@@ -159,7 +160,7 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
           <div className="space-y-5">
             {[
               { step: 1, title: "分享链接", desc: "复制邀请链接，发给好友", color: "bg-primary/10 text-primary" },
-              { step: 2, title: "好友注册登录兑换", desc: "下载雄鹰并登录兑换，再得500积分", color: "bg-accent/10 text-accent" },
+              { step: 2, title: "好友用邀请码注册", desc: "输入邀请码，积分翻 10 倍（50→500）", color: "bg-accent/10 text-accent" },
               { step: 3, title: "好友赚积分", desc: "30天内好友赚的，1:1返你", color: "bg-status-warning/10 text-status-warning" },
             ].map((item) => (
               <div key={item.step} className="flex items-center gap-3.5">

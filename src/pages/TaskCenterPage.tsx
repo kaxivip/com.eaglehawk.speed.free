@@ -34,6 +34,7 @@ export interface TaskItem {
   title: string
   description: string
   reward: number
+  rewardLabel?: string
   icon: React.ElementType
   iconColor: string
   iconBg: string
@@ -47,6 +48,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
   const [isWatchingAd, setIsWatchingAd] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [showPointsToast, setShowPointsToast] = useState(false)
 
   const AD_MAX = 8
   const AD_REWARD = 50
@@ -65,13 +67,13 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
   }
 
   const handleCopyQQGroup = () => {
-    navigator.clipboard.writeText("593635448").then(() => {
+    navigator.clipboard.writeText("1038179565").then(() => {
       setShowCopyToast(true)
       setTimeout(() => setShowCopyToast(false), 2500)
     }).catch(() => {
       // fallback
       const ta = document.createElement("textarea")
-      ta.value = "593635448"
+      ta.value = "1038179565"
       document.body.appendChild(ta)
       ta.select()
       document.execCommand("copy")
@@ -99,7 +101,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
     {
       id: "other",
       title: "高积分 限量福利",
-      description: "积分大于400时，可激活",
+      description: "积分大于200时，可激活",
       reward: 1000,
       icon: Crown,
       iconColor: "text-status-warning",
@@ -112,6 +114,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
       title: "分享好友得积分",
       description: "邀好友1:1得积分",
       reward: 100,
+      rewardLabel: "10倍积分",
       icon: UserPlus,
       iconColor: "text-accent",
       iconBg: "bg-accent/10",
@@ -131,6 +134,11 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
     }
 
     if (task.id === "other") {
+      if (points < 200) {
+        setShowPointsToast(true)
+        setTimeout(() => setShowPointsToast(false), 2500)
+        return
+      }
       setShowConfirmDialog(true)
       return
     }
@@ -419,7 +427,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
                   <p className="text-xs text-foreground/60 mt-0.5 truncate">{task.description}</p>
                 </div>
                 <div className="flex items-center gap-2.5 flex-shrink-0">
-                  <span className={`text-xs font-bold ml-1 ${isOther ? "text-amber-300" : "text-rose-300"}`}>+{task.reward}积分</span>
+                  <span className={`text-xs font-bold ml-1 ${isOther ? "text-amber-300" : "text-rose-300"}`}>{task.rewardLabel ? task.rewardLabel : `+${task.reward}积分`}</span>
                   {task.completed ? (
                     <CheckCircle2 className="w-5 h-5 text-status-connected" />
                   ) : (
@@ -443,7 +451,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
           </div>
           <div className="flex-1 min-w-0 relative z-10">
             <p className="text-xs font-medium text-foreground">免费加速QQ交流群</p>
-            <p className="text-[11px] text-foreground/60 mt-0.5">群号：593635448</p>
+            <p className="text-[11px] text-foreground/60 mt-0.5">群号：1038179565</p>
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-teal-300 flex-shrink-0 relative z-10 font-medium">
             <Copy className="w-3.5 h-3.5" />
@@ -462,6 +470,15 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
         </div>
       )}
 
+      {/* Points insufficient toast */}
+      {showPointsToast && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="px-5 py-3 rounded-xl bg-black/80 text-white text-sm shadow-xl animate-fade-in">
+            积分不足，需大于 200 积分才可激活
+          </div>
+        </div>
+      )}
+
       {/* Confirm dialog for 限量福利 */}
       {showConfirmDialog && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60">
@@ -472,7 +489,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
               </div>
               <p className="text-sm font-semibold text-foreground mb-1">限量福利</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                看广告，请在积分大于400时激活此任务入口^_^
+                积分大于200时，可激活限量福利任务入口
               </p>
             </div>
             <div className="flex border-t border-white/10">
