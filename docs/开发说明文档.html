@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雄鹰加速器 - 原生/H5 开发说明文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 40px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #1a1a2e;
+            border-bottom: 3px solid #f59e0b;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            color: #1a1a2e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid #f59e0b;
+        }
+        h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+        h4 {
+            font-size: 16px;
+            color: #4b5563;
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 12px;
+        }
+        strong {
+            color: #1a1a2e;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "SF Mono", Monaco, Consolas, monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+        pre {
+            background: #1a1a2e;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        ul, ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e5e7eb;
+            margin: 30px 0;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .toc {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc li {
+            padding: 4px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>雄鹰加速器 - 原生/H5 开发说明文档</h1>
+        
+        <div class="toc">
+            <h3 style="margin-top: 0;">目录</h3>
+            <ul>
+                <li><a href="#section1">一、项目概述</a></li>
+                <li><a href="#section2">二、应用架构</a></li>
+                <li><a href="#section3">三、页面详细说明</a></li>
+                <li><a href="#section4">四、业务逻辑</a></li>
+                <li><a href="#section5">五、UI/设计规范</a></li>
+                <li><a href="#section6">六、动画规范</a></li>
+                <li><a href="#section7">七、原生开发适配要点</a></li>
+                <li><a href="#section8">八、资源文件清单</a></li>
+                <li><a href="#section9">九、API 接口建议</a></li>
+                <li><a href="#section10">十、注意事项</a></li>
+            </ul>
+        </div>
+
+        <section id="section1" class="section">
+            <h2>一、项目概述</h2>
+            <p><strong>应用名称</strong>：雄鹰加速器</p>
+            <p><strong>应用类型</strong>：网络加速工具（VPN/Proxy）</p>
+            <p><strong>技术栈</strong>：React 18 + TypeScript + Vite + Tailwind CSS</p>
+            <p><strong>设计规范</strong>：375px 宽度（iPhone SE 基准），深色海洋主题</p>
+        </section>
+
+        <hr>
+
+        <section id="section2" class="section">
+            <h2>二、应用架构</h2>
+            
+            <h3>2.1 导航结构</h3>
+            <pre><code>App
+├── SplashPage (开屏)
+├── Privacy (隐私协议 - 首次启动)
+├── Main (主框架)
+│   ├── BottomNav (底部导航)
+│   │   ├── HomePage (首页/加速页)
+│   │   ├── TaskCenterPage (免费会员/任务中心)
+│   │   └── ProfilePage (我的)
+│   └── LoginPage (登录弹层 - 覆盖层)
+└── Sub Pages (子页面 - 全屏路由)
+    ├── ModeSelectPage (模式选择)
+    ├── AppSelectPage (应用选择)
+    ├── LineSelectPage (线路选择)
+    ├── SharePage (分享好友)
+    ├── ShareDetailPage (分享明细)
+    ├── OtherBenefitsPage (限量福利)
+    ├── TaskSubmitPage (任务提交)
+    ├── PointsExchangePage (积分兑换)
+    ├── PointsHistoryPage (积分历史)
+    ├── SettingsPage (设置)
+    ├── AgreementPage (协议详情)
+    ├── AccountDeletePage (注销账号)
+    ├── OtherPlatformsPage (其他平台)
+    ├── AboutPage (关于)
+    ├── HelpCenterPage (帮助中心)
+    └── BusinessCoopPage (商务合作)</code></pre>
+
+            <h3>2.2 全局状态</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>状态字段</th>
+                        <th>类型</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>stage</code></td><td>AppStage</td><td>当前页面路由标识</td></tr>
+                    <tr><td><code>isLoggedIn</code></td><td>boolean</td><td>登录状态</td></tr>
+                    <tr><td><code>currentPage</code></td><td>PageKey</td><td>底部导航当前页 ("home"/"tasks"/"profile")</td></tr>
+                    <tr><td><code>isConnected</code></td><td>boolean</td><td>VPN 连接状态</td></tr>
+                    <tr><td><code>isConnecting</code></td><td>boolean</td><td>连接中状态</td></tr>
+                    <tr><td><code>currentMode</code></td><td>"global" | "app"</td><td>加速模式</td></tr>
+                    <tr><td><code>currentLine</code></td><td>LineId</td><td>选择的线路</td></tr>
+                    <tr><td><code>selectedApps</code></td><td>string[]</td><td>应用加速模式下选中的应用列表</td></tr>
+                    <tr><td><code>memberMinutes</code></td><td>number</td><td>会员剩余时长（分钟），0=非会员</td></tr>
+                    <tr><td><code>points</code></td><td>number</td><td>用户积分</td></tr>
+                    <tr><td><code>remainingSeconds</code></td><td>number</td><td>当前加速剩余秒数</td></tr>
+                    <tr><td><code>showLoginModal</code></td><td>boolean</td><td>登录弹层显示状态</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="section3" class="section">
+            <h2>三、页面详细说明</h2>
+
+            <h3>3.1 开屏页 (SplashPage)</h3>
+            <p><strong>功能</strong>：品牌展示，2秒后自动跳转</p>
+            <p><strong>文案</strong>：</p>
+            <ul>
+                <li>标题：「雄鹰加速器」</li>
+                <li>副标题：「跨境专用」</li>
+                <li>底部：「永久免费 · 安全稳定」</li>
+            </ul>
+            <p><strong>跳转逻辑</strong>：</p>
+            <ul>
+                <li>已同意隐私 → 进入主页</li>
+                <li>未同意 → 进入隐私协议页</li>
+            </ul>
+
+            <h3>3.2 隐私协议页 (Privacy)</h3>
+            <p><strong>功能</strong>：首次启动隐私政策确认</p>
+            <p><strong>布局</strong>：</p>
+            <ul>
+                <li>Logo + 标题「隐私政策与用户协议」</li>
+                <li>可滚动内容区（信息收集、第三方共享、广告服务说明）</li>
+                <li>底部固定按钮区（<code>absolute bottom-[150px]</code>）</li>
+            </ul>
+            <table>
+                <thead>
+                    <tr><th>按钮</th><th>样式</th><th>行为</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>同意并继续</td><td>主按钮（金色渐变）</td><td>记录同意，进入主页</td></tr>
+                    <tr><td>不同意</td><td>文字按钮</td><td>返回开屏页</td></tr>
+                </tbody>
+            </table>
+
+            <h3>3.3 首页 (HomePage)</h3>
+            <p><strong>功能</strong>：VPN 加速控制主界面</p>
+            
+            <h4>未连接态</h4>
+            <ul>
+                <li>顶部：品牌名「雄鹰加速器」+ 「送会员」分享按钮</li>
+                <li>状态 Pill：「准备就绪」/「连接中...」</li>
+                <li>火箭图标（<code>scale-90</code>）</li>
+                <li>底部控制区（<code>mt-[63px]</code>）：
+                    <ul>
+                        <li>模式/线路选择按钮行</li>
+                        <li>「立即提速」CTA 按钮（金色渐变）</li>
+                        <li>广告位预留</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>连接中态</h4>
+            <ul>
+                <li>状态 Pill：「连接中...」带脉冲动画</li>
+                <li>CTA 按钮文案变为「连接中...」</li>
+            </ul>
+
+            <h4>已连接态</h4>
+            <ul>
+                <li>火箭 + 剩余时长显示（HH:MM:SS）</li>
+                <li>点击时长可刷新</li>
+                <li>「停止加速」按钮（绿色渐变）</li>
+            </ul>
+
+            <h4>模式选项</h4>
+            <table>
+                <thead><tr><th>模式</th><th>图标</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td>全局加速</td><td>Globe</td><td>所有流量走代理</td></tr>
+                    <tr><td>应用加速</td><td>Smartphone</td><td>仅指定应用走代理</td></tr>
+                </tbody>
+            </table>
+
+            <h4>线路选项</h4>
+            <ul>
+                <li>智能优选 (smart)</li>
+                <li>日本东京 (japan)</li>
+                <li>美国硅谷 (usa)</li>
+                <li>新加坡 (singapore)</li>
+                <li>韩国首尔 (korea)</li>
+            </ul>
+
+            <h3>3.4 免费会员/任务中心 (TaskCenterPage)</h3>
+            <p><strong>功能</strong>：通过任务赚取积分兑换会员时长</p>
+            
+            <h4>积分卡片（顶部）</h4>
+            <table>
+                <thead><tr><th>区域</th><th>显示</th><th>点击行为</th></tr></thead>
+                <tbody>
+                    <tr><td>左：我的积分</td><td>数值 + 图标</td><td>跳转积分历史</td></tr>
+                    <tr><td>右：加速会员</td><td>剩余分钟数</td><td>切换会员状态（DEV）</td></tr>
+                    <tr><td>右下</td><td>「兑换」按钮</td><td>跳转积分兑换</td></tr>
+                </tbody>
+            </table>
+
+            <h4>看广告赚积分卡片</h4>
+            <table>
+                <thead><tr><th>配置项</th><th>值</th></tr></thead>
+                <tbody>
+                    <tr><td>每日上限</td><td>8 次</td></tr>
+                    <tr><td>单次奖励</td><td>50 积分</td></tr>
+                    <tr><td>每日满额</td><td>400 积分</td></tr>
+                </tbody>
+            </table>
+
+            <h4>任务列表</h4>
+            <table>
+                <thead><tr><th>任务ID</th><th>标题</th><th>描述</th><th>奖励</th><th>行为</th></tr></thead>
+                <tbody>
+                    <tr><td>other</td><td>高积分 限量福利</td><td>积分大于200时，可激活</td><td>1000</td><td>积分≥200时弹确认框，&lt;200时弹toast</td></tr>
+                    <tr><td>invite</td><td>分享好友得积分</td><td>邀好友1:1得积分</td><td>10倍积分</td><td>跳转分享页</td></tr>
+                </tbody>
+            </table>
+
+            <h4>QQ 群卡片</h4>
+            <ul>
+                <li>群号：<strong>1038179565</strong></li>
+                <li>点击复制群号到剪贴板</li>
+            </ul>
+
+            <h3>3.5 我的 (ProfilePage)</h3>
+            <p><strong>功能</strong>：用户信息、快捷入口</p>
+            <p><strong>未登录态</strong>：显示「点击登录」按钮，弹出登录弹层</p>
+            <p><strong>已登录态</strong>菜单列表：</p>
+            <ul>
+                <li>分享好友</li>
+                <li>帮助中心</li>
+                <li>商务合作</li>
+                <li>关于我们</li>
+                <li>设置</li>
+            </ul>
+
+            <h3>3.6 登录页 (LoginPage) - 底部弹层</h3>
+            <p><strong>展示方式</strong>：Bottom Sheet Modal（从底部滑入）</p>
+            <p><strong>最大高度</strong>：85%</p>
+            <p><strong>关闭方式</strong>：点击背景遮罩</p>
+            
+            <h4>表单字段</h4>
+            <table>
+                <thead><tr><th>字段</th><th>类型</th><th>验证</th></tr></thead>
+                <tbody>
+                    <tr><td>手机号</td><td>tel</td><td>11位数字</td></tr>
+                    <tr><td>验证码</td><td>text</td><td>4-6位</td></tr>
+                    <tr><td>邀请码（选填）</td><td>text</td><td>无</td></tr>
+                </tbody>
+            </table>
+
+            <h3>3.7 积分兑换页 (PointsExchangePage)</h3>
+            <p><strong>功能</strong>：使用积分兑换会员时长</p>
+            
+            <h4>会员日专享</h4>
+            <ul>
+                <li>每月 8/18/28 日开放</li>
+                <li>非会员日显示收起卡片（含倒计时）</li>
+            </ul>
+            <table>
+                <thead><tr><th>商品</th><th>时长</th><th>积分</th><th>主题色</th></tr></thead>
+                <tbody>
+                    <tr><td>member-day-7d</td><td>7×24小时</td><td>1000</td><td>琥珀金 (amber)</td></tr>
+                    <tr><td>member-day-24h</td><td>24小时</td><td>500</td><td>青蓝 (teal)</td></tr>
+                </tbody>
+            </table>
+
+            <h4>常规兑换</h4>
+            <table>
+                <thead><tr><th>商品ID</th><th>时长</th><th>积分</th><th>标记</th></tr></thead>
+                <tbody>
+                    <tr><td>30min</td><td>30分钟</td><td>30</td><td>-</td></tr>
+                    <tr><td>1h</td><td>1小时</td><td>60</td><td>热门</td></tr>
+                    <tr><td>24h</td><td>24小时</td><td>1200</td><td>-</td></tr>
+                    <tr><td>7d</td><td>7天</td><td>7200</td><td>-</td></tr>
+                </tbody>
+            </table>
+
+            <h3>3.8 分享好友页 (SharePage)</h3>
+            <p><strong>功能</strong>：邀请好友赚取积分</p>
+            <p><strong>核心卖点</strong>：<span class="highlight">10 倍积分</span>（有邀请码 500 vs 无邀请码 50）</p>
+            
+            <h4>分享文案</h4>
+            <pre><code>我在用雄鹰加速器，永久免费！一键畅游全球，用我的邀请码注册立享 10 倍积分（500 积分）🎁 {shareUrl}</code></pre>
+
+            <h4>底部说明</h4>
+            <pre><code>* 无邀请码注册仅得 50 积分；通过邀请码注册可获 50×10 = 500 积分，多赚 450 积分</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="section4" class="section">
+            <h2>四、业务逻辑</h2>
+
+            <h3>4.1 积分系统</h3>
+            <h4>积分获取途径</h4>
+            <table>
+                <thead><tr><th>途径</th><th>积分</th><th>频率限制</th></tr></thead>
+                <tbody>
+                    <tr><td>观看激励广告</td><td>50/次</td><td>每日8次</td></tr>
+                    <tr><td>邀请好友注册（无邀请码）</td><td>50</td><td>-</td></tr>
+                    <tr><td>邀请好友注册（有邀请码）</td><td>500 (10倍)</td><td>-</td></tr>
+                    <tr><td>好友30天内积分1:1返还</td><td>等额</td><td>30天内</td></tr>
+                    <tr><td>福利任务</td><td>不定</td><td>积分&gt;200可激活</td></tr>
+                </tbody>
+            </table>
+
+            <h4>积分消耗</h4>
+            <table>
+                <thead><tr><th>用途</th><th>消耗</th></tr></thead>
+                <tbody>
+                    <tr><td>兑换30分钟会员</td><td>30</td></tr>
+                    <tr><td>兑换1小时会员</td><td>60</td></tr>
+                    <tr><td>兑换24小时会员</td><td>1200</td></tr>
+                    <tr><td>兑换7天会员</td><td>7200</td></tr>
+                    <tr><td>会员日24小时</td><td>500</td></tr>
+                    <tr><td>会员日7天</td><td>1000</td></tr>
+                </tbody>
+            </table>
+
+            <h3>4.2 会员系统</h3>
+            <p><strong>会员状态判定</strong>：<code>memberMinutes &gt; 0</code></p>
+            <p><strong>计时器逻辑</strong>：</p>
+            <ul>
+                <li>连接时设置 <code>remainingSeconds = memberMinutes * 60</code></li>
+                <li>每秒递减</li>
+                <li>归零时自动断开连接</li>
+            </ul>
+
+            <h3>4.3 VPN 连接逻辑</h3>
+            <p><strong>状态流转</strong>：</p>
+            <pre><code>未连接 → 点击 → 连接中(2秒) → 已连接
+已连接 → 点击 → 未连接
+已连接 → 时间归零 → 未连接</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="section5" class="section">
+            <h2>五、UI/设计规范</h2>
+
+            <h3>5.1 主题色系</h3>
+            <table>
+                <thead><tr><th>变量名</th><th>用途</th><th>色值参考</th></tr></thead>
+                <tbody>
+                    <tr><td>primary</td><td>品牌金/主色调</td><td>amber/gold 系</td></tr>
+                    <tr><td>accent</td><td>辅助色</td><td>金色系</td></tr>
+                    <tr><td>status-warning</td><td>警告/积分</td><td>琥珀金</td></tr>
+                    <tr><td>status-connected</td><td>已连接/成功</td><td>绿色</td></tr>
+                    <tr><td>ocean-gradient</td><td>背景渐变</td><td>深蓝→青</td></tr>
+                    <tr><td>ocean-surface</td><td>卡片底色</td><td>深海蓝</td></tr>
+                </tbody>
+            </table>
+
+            <h3>5.2 圆角规范</h3>
+            <table>
+                <thead><tr><th>元素</th><th>圆角</th></tr></thead>
+                <tbody>
+                    <tr><td>卡片</td><td>rounded-2xl (16px)</td></tr>
+                    <tr><td>按钮</td><td>rounded-xl (12px)</td></tr>
+                    <tr><td>图标容器</td><td>rounded-xl (12px)</td></tr>
+                    <tr><td>输入框</td><td>rounded-xl (12px)</td></tr>
+                    <tr><td>标签</td><td>rounded-full / rounded</td></tr>
+                </tbody>
+            </table>
+
+            <h3>5.3 间距规范</h3>
+            <table>
+                <thead><tr><th>场景</th><th>值</th></tr></thead>
+                <tbody>
+                    <tr><td>页面水平内边距</td><td>px-5 (20px)</td></tr>
+                    <tr><td>卡片内边距</td><td>p-4 (16px)</td></tr>
+                    <tr><td>元素间距（紧凑）</td><td>gap-2 (8px)</td></tr>
+                    <tr><td>元素间距（标准）</td><td>gap-3 (12px)</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="section6" class="section">
+            <h2>六、动画规范</h2>
+            
+            <h3>6.1 页面转场</h3>
+            <ul>
+                <li>子页面进入：<code>animate-slide-in-right</code>（从右侧滑入）</li>
+                <li>弹层进入：<code>animate-slide-up</code>（从底部滑入）</li>
+            </ul>
+
+            <h3>6.2 交互动画</h3>
+            <table>
+                <thead><tr><th>交互</th><th>动画</th></tr></thead>
+                <tbody>
+                    <tr><td>按钮点击</td><td><code>active:scale-[0.97]</code> 或 <code>active:scale-95</code></td></tr>
+                    <tr><td>卡片点击</td><td><code>active:scale-[0.98]</code></td></tr>
+                    <tr><td>状态切换</td><td><code>transition-all duration-200</code></td></tr>
+                    <tr><td>脉冲提示</td><td><code>animate-pulse</code></td></tr>
+                    <tr><td>淡入</td><td><code>animate-fade-in</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="section7" class="section">
+            <h2>七、原生开发适配要点</h2>
+
+            <h3>7.1 iOS 适配</h3>
+            <table>
+                <thead><tr><th>事项</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td>Safe Area</td><td>顶部刘海区（已预留 h-12=48px）、底部 Home 指示条</td></tr>
+                    <tr><td>VPN 权限</td><td>首次连接需请求 VPN 配置权限</td></tr>
+                    <tr><td>剪贴板</td><td>UIPasteboard.general.string</td></tr>
+                    <tr><td>激励广告</td><td>接入 AdMob / AppLovin 等 SDK</td></tr>
+                </tbody>
+            </table>
+
+            <h3>7.2 Android 适配</h3>
+            <table>
+                <thead><tr><th>事项</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td>状态栏</td><td>沉浸式，内容延伸至状态栏下方</td></tr>
+                    <tr><td>VPN 权限</td><td>VpnService.prepare() 请求</td></tr>
+                    <tr><td>剪贴板</td><td>ClipboardManager</td></tr>
+                    <tr><td>后台运行</td><td>VPN 服务需 Foreground Service</td></tr>
+                </tbody>
+            </table>
+
+            <h3>7.3 H5 适配</h3>
+            <table>
+                <thead><tr><th>事项</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td>视口</td><td>viewport-fit=cover, user-scalable=no</td></tr>
+                    <tr><td>触摸</td><td>touch-action: manipulation</td></tr>
+                    <tr><td>安全区</td><td>env(safe-area-inset-*)</td></tr>
+                    <tr><td>VPN 功能</td><td>H5 无法实现真实 VPN，需跳转 App Store/应用市场</td></tr>
+                    <tr><td>广告 SDK</td><td>接入穿山甲、优量汇等 H5 版本</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="section8" class="section">
+            <h2>八、资源文件清单</h2>
+
+            <h3>8.1 图片资源</h3>
+            <table>
+                <thead><tr><th>文件名</th><th>用途</th><th>路径</th></tr></thead>
+                <tbody>
+                    <tr><td>fy-logo001.png</td><td>主 Logo</td><td>/images/</td></tr>
+                    <tr><td>fy-logo002.png</td><td>Logo 变体</td><td>/images/</td></tr>
+                    <tr><td>logo_icon.png</td><td>小图标</td><td>/images/</td></tr>
+                    <tr><td>banner-member-day.png</td><td>会员日 Banner</td><td>/images/</td></tr>
+                    <tr><td>banner-share-friends.png</td><td>分享好友 Banner</td><td>/images/</td></tr>
+                </tbody>
+            </table>
+
+            <h3>8.2 图标库</h3>
+            <p>使用 Lucide React 图标库，主要图标：</p>
+            <ul>
+                <li>Globe, Smartphone, Signal, Zap, Pause, Play, PlayCircle</li>
+                <li>Coins, Crown, Gift, Trophy</li>
+                <li>UserPlus, Share2, Copy, Check</li>
+                <li>ChevronLeft, ChevronRight, ChevronDown, ArrowRight</li>
+                <li>CheckCircle2, X, AlertCircle</li>
+                <li>Rocket（积分兑换页商品图标）</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section id="section9" class="section">
+            <h2>九、API 接口建议（待后端实现）</h2>
+
+            <h3>9.1 用户模块</h3>
+            <pre><code>POST /api/auth/sms-code      # 发送验证码
+POST /api/auth/login          # 登录/注册
+POST /api/auth/logout         # 退出登录
+GET  /api/user/profile        # 获取用户信息
+POST /api/user/delete         # 注销账号</code></pre>
+
+            <h3>9.2 积分模块</h3>
+            <pre><code>GET  /api/points/balance      # 获取积分余额
+GET  /api/points/history      # 获取积分流水
+POST /api/points/earn         # 积分获取（广告回调/任务完成）
+POST /api/points/exchange     # 积分兑换会员</code></pre>
+
+            <h3>9.3 会员模块</h3>
+            <pre><code>GET  /api/member/status       # 获取会员状态/剩余时长
+GET  /api/member/products     # 获取兑换商品列表</code></pre>
+
+            <h3>9.4 VPN 模块</h3>
+            <pre><code>GET  /api/vpn/lines           # 获取线路列表
+GET  /api/vpn/config          # 获取 VPN 配置
+POST /api/vpn/connect         # 连接上报
+POST /api/vpn/disconnect      # 断开上报</code></pre>
+
+            <h3>9.5 分享模块</h3>
+            <pre><code>GET  /api/share/info          # 获取邀请码、分享链接
+GET  /api/share/records       # 获取分享明细
+POST /api/share/claim-invite  # 领取邀请奖励</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="section10" class="section">
+            <h2>十、注意事项</h2>
+            <ol>
+                <li><strong>积分永不过期</strong>（需在协议中说明）</li>
+                <li><strong>会员日判断</strong>：每月 8/18/28 日开放会员日特惠</li>
+                <li><strong>邀请码奖励</strong>：首次使用邀请码（≥4字符）登录 +100 积分</li>
+                <li><strong>1:1 返还</strong>：好友 30 天内获取的所有积分，等额赠送给邀请人</li>
+                <li><strong>限量福利门槛</strong>：积分 &gt; 200 才可激活</li>
+                <li><strong>广告观看</strong>：每日上限 8 次，每次 50 积分</li>
+                <li><strong>品牌邮箱</strong>：bianmeng.net@outlook.com</li>
+                <li><strong>QQ 群号</strong>：1038179565</li>
+            </ol>
+        </section>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 14px;">
+            <p>雄鹰加速器 开发说明文档</p>
+            <p>生成时间：2026年8月25日</p>
+        </div>
+    </div>
+</body>
+</html>

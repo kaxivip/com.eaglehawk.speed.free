@@ -69,7 +69,7 @@ function StatusPill({
           : isConnecting ? "bg-primary animate-pulse" : "bg-primary"
       )} />
       <span className={cn(
-        "text-sm font-medium",
+        "text-sm font-normal",
         isConnected ? "text-status-connected" : "text-primary"
       )}>
         {isConnected ? `加速中 ${formatTimer(remainingSeconds)}` : isConnecting ? "连接中..." : "准备就绪"}
@@ -205,7 +205,7 @@ export function HomePage(p: HomePageProps) {
               onClick={p.onToggleConnect}
               className={cn(
                 "w-full h-[60px] rounded-2xl flex items-center justify-center gap-3",
-                "text-lg font-semibold tracking-wide transition-all duration-300 active:scale-[0.97]",
+                "text-lg font-normal tracking-wide transition-all duration-300 active:scale-[0.97]",
                 p.isConnecting
                   ? "bg-gradient-to-r from-primary/70 to-accent/70 text-primary-foreground"
                   : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[0_6px_36px_hsl(38_92%_55%/0.4)]"

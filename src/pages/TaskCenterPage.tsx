@@ -184,7 +184,7 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
                 <div className="flex items-end h-8">
                   <span className="text-2xl font-bold text-foreground leading-none">{points}</span>
                 </div>
-                <span className="flex items-center gap-1 text-[10px] text-primary hover:text-primary/80 transition-colors h-4"><History className="w-3 h-3" />明细 <ArrowRight className="w-2.5 h-2.5" /></span>
+                <span className="inline-flex items-center gap-1 text-[10px] leading-none font-medium text-primary/90 bg-primary/10 px-2 py-1 rounded-full cursor-pointer active:scale-95 transition-transform"><History className="w-3 h-3" />明细 <ArrowRight className="w-2.5 h-2.5" /></span>
               </div>
 
               {/* Right: Member */}
@@ -201,14 +201,14 @@ export function TaskCenterPage({ points, memberMinutes, onToggleMember, onEarnPo
                     {isMember ? "到期" : "请兑会员"}
                   </span>
                 </div>
-                <button
+                <span
                   onClick={(e) => { e.stopPropagation(); onOpenPointsExchange(); }}
-                  className="self-start flex items-center gap-1 text-[10px] text-primary hover:text-primary/80 transition-colors h-4"
+                  className="inline-flex items-center gap-1 text-[10px] leading-none font-medium text-primary/90 bg-primary/10 px-2 py-1 rounded-full cursor-pointer active:scale-95 transition-transform"
                 >
                   <Gift className="w-3 h-3" />
                   兑换
                   <ArrowRight className="w-2.5 h-2.5" />
-                </button>
+                </span>
               </div>
             </div>
           </CardContent>
