@@ -35,7 +35,7 @@ export function SplashPage({ onFinish }: SplashPageProps) {
       <div className="animate-fade-in relative z-10 flex flex-col items-center gap-7">
         <div className="w-28 h-28 rounded-[1.6rem] overflow-hidden glow-primary">
           <img
-            src="./images/fy-logo001.png"
+            src="./images/logo-app.png"
             alt="雄鹰加速器"
             className="w-full h-full object-cover"
           />

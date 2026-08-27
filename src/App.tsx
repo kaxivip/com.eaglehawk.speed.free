@@ -253,7 +253,7 @@ export default function App() {
             {/* Header - Logo + Title */}
             <div className="relative z-10 flex flex-col items-center gap-3 pt-[22%] pb-6">
               <div className="w-20 h-20 rounded-[22px] overflow-hidden shadow-[0_8px_30px_hsl(38_92%_55%/0.15)] ring-1 ring-primary/20">
-                <img src="./images/fy-logo001.png" alt="logo" className="w-full h-full object-cover" />
+                <img src="./images/logo-app.png" alt="logo" className="w-full h-full object-cover" />
               </div>
               <div className="text-center">
                 <h2 className="text-xl font-bold text-foreground tracking-wide">隐私政策与用户协议</h2>

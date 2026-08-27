@@ -60,7 +60,7 @@ export function LoginPage({ onLogin, onClose }: LoginPageProps) {
           {/* Logo */}
           <div className="flex flex-col items-center mb-6 mt-2">
             <div className="w-14 h-14 rounded-2xl overflow-hidden glow-primary mb-3">
-              <img src="./images/fy-logo001.png" alt="雄鹰加速器" className="w-full h-full object-cover" />
+              <img src="./images/logo-app.png" alt="雄鹰加速器" className="w-full h-full object-cover" />
             </div>
             <p className="text-sm text-muted-foreground">登录后享受加速服务</p>
           </div>

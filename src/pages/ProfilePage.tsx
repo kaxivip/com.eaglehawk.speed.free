@@ -131,7 +131,7 @@ export function ProfilePage({ isLoggedIn, onLogin, onOpenSettings, onOpenShare, 
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl overflow-hidden">
-                  <img src="./images/fy-logo001.png" alt="logo" className="w-full h-full object-cover" />
+                  <img src="./images/logo-app.png" alt="logo" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm text-muted-foreground">186****8888</p>
