@@ -6,6 +6,7 @@ interface AccelerateButtonProps {
   isConnecting: boolean
   onToggle: () => void
   hideButton?: boolean
+  unconnectedStyle?: "default" | "eagle" | "rocket"
 }
 
 /* Gauge tick data: 21 marks along a 160° arc (from -170° to -10°) */
@@ -24,7 +25,7 @@ const TICKS = (() => {
   })
 })()
 
-export function AccelerateButton({ isConnected, isConnecting, onToggle, hideButton }: AccelerateButtonProps) {
+export function AccelerateButton({ isConnected, isConnecting, onToggle, hideButton, unconnectedStyle = "default" }: AccelerateButtonProps) {
   return (
     <div className="flex flex-col items-center w-full">
       {/* Rocket + Gauge area */}
@@ -89,19 +90,23 @@ export function AccelerateButton({ isConnected, isConnecting, onToggle, hideButt
               </filter>
             </defs>
 
-            {/* Gauge arc */}
-            <path d="M 26 200 A 100 100 0 0 1 202 200" fill="none" stroke={isConnected ? "hsl(38 92% 55% / 0.4)" : "hsl(215 15% 55% / 0.12)"} strokeWidth="1.2" strokeLinecap="round" filter={isConnected ? "url(#arcGlow)" : undefined} />
-            <path d="M 40 200 A 86 86 0 0 1 188 200" fill="none" stroke={isConnected ? "hsl(38 92% 55% / 0.15)" : "hsl(215 15% 55% / 0.06)"} strokeWidth="0.6" strokeDasharray="2 4" />
+            {/* Gauge arc & ticks - hidden only in eagle idle style */}
+            {!(unconnectedStyle === "eagle" && !isConnected && !isConnecting) && (
+              <>
+                <path d="M 26 200 A 100 100 0 0 1 202 200" fill="none" stroke={isConnected ? "hsl(38 92% 55% / 0.4)" : "hsl(215 15% 55% / 0.12)"} strokeWidth="1.2" strokeLinecap="round" filter={isConnected ? "url(#arcGlow)" : undefined} />
+                <path d="M 40 200 A 86 86 0 0 1 188 200" fill="none" stroke={isConnected ? "hsl(38 92% 55% / 0.15)" : "hsl(215 15% 55% / 0.06)"} strokeWidth="0.6" strokeDasharray="2 4" />
 
-            {/* Tick marks */}
-            {TICKS.map((t, i) => (
-              <line key={i} x1={t.ix} y1={t.iy} x2={t.ox} y2={t.oy}
-                stroke={isConnected
-                  ? t.center ? "hsl(38 95% 62% / 0.9)" : t.major ? "hsl(38 92% 55% / 0.6)" : "hsl(38 92% 55% / 0.35)"
-                  : t.center ? "hsl(215 15% 70% / 0.5)" : t.major ? "hsl(215 15% 55% / 0.3)" : "hsl(215 15% 55% / 0.18)"
-                }
-                strokeWidth={t.center ? "1.5" : t.major ? "1.2" : "0.7"} strokeLinecap="round" />
-            ))}
+                {/* Tick marks */}
+                {TICKS.map((t, i) => (
+                  <line key={i} x1={t.ix} y1={t.iy} x2={t.ox} y2={t.oy}
+                    stroke={isConnected
+                      ? t.center ? "hsl(38 95% 62% / 0.9)" : t.major ? "hsl(38 92% 55% / 0.6)" : "hsl(38 92% 55% / 0.35)"
+                      : t.center ? "hsl(215 15% 70% / 0.5)" : t.major ? "hsl(215 15% 55% / 0.3)" : "hsl(215 15% 55% / 0.18)"
+                    }
+                    strokeWidth={t.center ? "1.5" : t.major ? "1.2" : "0.7"} strokeLinecap="round" />
+                ))}
+              </>
+            )}
 
             {/* Speed lines */}
             {isConnected && (
@@ -124,28 +129,41 @@ export function AccelerateButton({ isConnected, isConnecting, onToggle, hideButt
                   <ellipse cx="122" cy="210" rx="4" ry="16" fill="hsl(30 90% 52% / 0.45)" transform="rotate(8 122 210)" />
                 </g>
               )}
-              {!isConnected && !isConnecting && (
+              {!isConnected && !isConnecting && unconnectedStyle === "default" && (
                 <g opacity="0.25">
                   <line x1="114" y1="196" x2="114" y2="215" stroke="hsl(38 92% 55%)" strokeWidth="2" strokeLinecap="round" />
                   <line x1="108" y1="198" x2="108" y2="210" stroke="hsl(38 92% 55%)" strokeWidth="1.2" strokeLinecap="round" />
                   <line x1="120" y1="198" x2="120" y2="210" stroke="hsl(38 92% 55%)" strokeWidth="1.2" strokeLinecap="round" />
                 </g>
               )}
-              <path d="M 98 178 L 84 200 L 100 192 Z" fill="url(#finGrad)" />
-              <path d="M 130 178 L 144 200 L 128 192 Z" fill="url(#finGrad)" />
-              <path d="M 110 190 L 114 202 L 118 190 Z" fill="hsl(215 15% 45%)" />
-              <path d="M 114 80 C 130 98 134 130 132 175 L 128 192 L 100 192 L 96 175 C 94 130 98 98 114 80 Z" fill="url(#rocketBody)" stroke="hsl(35 80% 48% / 0.3)" strokeWidth="0.5" />
-              <path d="M 110 100 C 112 96 116 96 118 100 L 118 185 L 110 185 Z" fill="hsl(0 0% 100% / 0.1)" />
-              <path d="M 114 80 C 121 90 124 100 123 108 L 105 108 C 104 100 107 90 114 80 Z" fill="url(#noseCone)" />
-              <ellipse cx="113" cy="88" rx="2" ry="4" fill="hsl(0 0% 100% / 0.3)" />
-              <circle cx="114" cy="138" r="11" fill="hsl(28 55% 22%)" stroke="hsl(38 92% 55% / 0.5)" strokeWidth="1.5" />
-              <circle cx="114" cy="138" r="8" fill="hsl(40 92% 58% / 0.6)" />
-              <circle cx="114" cy="138" r="5" fill="hsl(45 95% 65% / 0.4)" />
-              <ellipse cx="111" cy="135" rx="3" ry="2.5" fill="hsl(0 0% 100% / 0.45)" />
-              <rect x="100" y="160" width="28" height="2" rx="1" fill="hsl(38 92% 55% / 0.2)" />
-              <rect x="102" y="166" width="24" height="1.5" rx="0.75" fill="hsl(38 92% 55% / 0.12)" />
-              <path d="M 104 190 L 100 196 L 128 196 L 124 190" fill="hsl(215 15% 35%)" />
-              <path d="M 107 192 L 105 196 L 123 196 L 121 192" fill="hsl(215 15% 25%)" />
+              {!isConnected && !isConnecting && unconnectedStyle !== "default" ? (
+                <image
+                  href={unconnectedStyle === "eagle" ? "./images/logo-eagle-style.png" : "./images/rocket-style.webp"}
+                  x="14"
+                  y="38"
+                  width="200"
+                  height="200"
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              ) : (
+                <>
+                  <path d="M 98 178 L 84 200 L 100 192 Z" fill="url(#finGrad)" />
+                  <path d="M 130 178 L 144 200 L 128 192 Z" fill="url(#finGrad)" />
+                  <path d="M 110 190 L 114 202 L 118 190 Z" fill="hsl(215 15% 45%)" />
+                  <path d="M 114 80 C 130 98 134 130 132 175 L 128 192 L 100 192 L 96 175 C 94 130 98 98 114 80 Z" fill="url(#rocketBody)" stroke="hsl(35 80% 48% / 0.3)" strokeWidth="0.5" />
+                  <path d="M 110 100 C 112 96 116 96 118 100 L 118 185 L 110 185 Z" fill="hsl(0 0% 100% / 0.1)" />
+                  <path d="M 114 80 C 121 90 124 100 123 108 L 105 108 C 104 100 107 90 114 80 Z" fill="url(#noseCone)" />
+                  <ellipse cx="113" cy="88" rx="2" ry="4" fill="hsl(0 0% 100% / 0.3)" />
+                  <circle cx="114" cy="138" r="11" fill="hsl(28 55% 22%)" stroke="hsl(38 92% 55% / 0.5)" strokeWidth="1.5" />
+                  <circle cx="114" cy="138" r="8" fill="hsl(40 92% 58% / 0.6)" />
+                  <circle cx="114" cy="138" r="5" fill="hsl(45 95% 65% / 0.4)" />
+                  <ellipse cx="111" cy="135" rx="3" ry="2.5" fill="hsl(0 0% 100% / 0.45)" />
+                  <rect x="100" y="160" width="28" height="2" rx="1" fill="hsl(38 92% 55% / 0.2)" />
+                  <rect x="102" y="166" width="24" height="1.5" rx="0.75" fill="hsl(38 92% 55% / 0.12)" />
+                  <path d="M 104 190 L 100 196 L 128 196 L 124 190" fill="hsl(215 15% 35%)" />
+                  <path d="M 107 192 L 105 196 L 123 196 L 121 192" fill="hsl(215 15% 25%)" />
+                </>
+              )}
             </g>
 
             {/* Connecting spinner */}

@@ -160,12 +160,13 @@ export function HomePage(p: HomePageProps) {
           </div>
 
           {/* 火箭 */}
-          <div className="relative z-10 flex justify-center mt-10 scale-90 origin-top">
+          <div className="relative z-10 flex justify-center mt-8 scale-90 origin-top">
             <AccelerateButton
               isConnected={p.isConnected}
               isConnecting={p.isConnecting}
               onToggle={p.onToggleConnect}
               hideButton
+              unconnectedStyle="eagle"
             />
           </div>
 
