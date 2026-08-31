@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>关于雄鹰</title>
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="css/app.css">
+  <!-- Vue3 CDN -->
+  <script src="js/vue.global.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="js/lucide.js"></script>
+  
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div id="app" class="w-full max-w-md h-[100dvh] max-h-[900px] shadow-xl relative overflow-hidden">
+    <div class="w-full h-full bg-ocean-gradient flex flex-col relative overflow-hidden">
+      
+      <!-- Ambient glow -->
+      <div class="absolute top-0 right-0 w-64 h-64 rounded-full bg-accent/5 blur-[80px] pointer-events-none"></div>
+      
+      <!-- Status bar spacer -->
+      <!-- <div class="h-12"></div> -->
+
+      <!-- Header -->
+      <!-- <div class="relative z-10 px-5 pt-2 flex items-center gap-3">
+        <button @click="onBack" class="text-muted-foreground hover:text-foreground transition-colors p-1 -ml-1">
+          <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+        <h2 class="text-lg font-bold text-foreground">关于雄鹰</h2>
+      </div> -->
+
+      <!-- Content -->
+      <div class="relative z-10 flex-1 overflow-auto px-5 pt-6 pb-8">
+        
+        <!-- Logo + branding -->
+        <div class="flex flex-col items-center mb-8">
+          <div class="w-[72px] h-[72px] rounded-2xl overflow-hidden glow-primary mb-3 bg-white flex items-center justify-center">
+            <!-- 这里使用占位图，你可以替换为真实的 /images/logo.png -->
+            <div class="w-full h-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl"><img src="logo.png" alt=""></div>
+          </div>
+          <h1 class="text-xl font-black text-gradient-cyan mb-1">雄鹰加速器</h1>
+          <p class="text-sm text-muted-foreground">让网络快人一步</p>
+          <!-- <p class="text-xs text-muted-foreground/60 mt-1">版本 v1.0.0</p> -->
+        </div>
+
+        <!-- Feature highlights -->
+        <div class="mb-6">
+          <p class="text-xs text-muted-foreground/70 font-medium mb-3 px-1">产品特色</p>
+          <div class="space-y-3">
+            <div 
+              v-for="f in features" 
+              :key="f.title" 
+              class="glass-card rounded-xl border-0 p-4 flex items-center gap-4"
+            >
+              <div :class="['w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0', f.bg]">
+                <i :data-lucide="f.icon" :class="['w-5 h-5', f.color]"></i>
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-foreground">{{ f.title }}</p>
+                <p class="text-xs text-muted-foreground mt-0.5">{{ f.desc }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="mb-6">
+          <p class="text-xs text-muted-foreground/70 font-medium mb-2 px-1">联系我们</p>
+          <div class="glass-card border-0 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                <i data-lucide="mail" class="w-4 h-4 text-primary"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-foreground">客服邮箱</p>
+                <p class="text-xs text-primary font-mono"><a href="https://xiongying.pro/h5/feedback.html">bianmeng.net@outlook.com</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex flex-col items-center gap-1 pt-2 pb-4">
+          <p class="text-[10px] text-muted-foreground/50">© 2026 雄鹰加速器 版权所有</p>
+          <p class="text-[10px] text-muted-foreground/40">沪ICP备2021006153号-9A</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref, onMounted, nextTick } = Vue;
+
+    createApp({
+      setup() {
+        // 产品特色数据
+        const features = ref([
+          {
+            icon: 'zap',
+            title: '极速加速',
+            desc: '全球节点智能优选，毫秒级延迟',
+            color: 'text-primary',
+            bg: 'bg-primary/10',
+          },
+          {
+            icon: 'globe',
+            title: '全球覆盖',
+            desc: '覆盖亚太、欧美等主流地区',
+            color: 'text-status-connected',
+            bg: 'bg-status-connected/10',
+          },
+          {
+            icon: 'shield',
+            title: '安全可靠',
+            desc: '端到端加密，数据安全保障',
+            color: 'text-status-warning',
+            bg: 'bg-status-warning/10',
+          },
+          {
+            icon: 'users',
+            title: '免费使用',
+            desc: '完成任务赚积分，免费享会员',
+            color: 'text-accent',
+            bg: 'bg-accent/10',
+          },
+        ]);
+
+        const onBack = () => {
+          alert('返回上一页');
+        };
+
+        // 渲染 Lucide 图标
+        const renderIcons = () => {
+          nextTick(() => {
+            if (window.lucide) {
+              lucide.createIcons();
+            }
+          });
+        };
+
+        onMounted(() => {
+          renderIcons();
+        });
+
+        return {
+          features,
+          onBack
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

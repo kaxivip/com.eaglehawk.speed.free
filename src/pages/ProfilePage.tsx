@@ -260,7 +260,7 @@ export function ProfilePage({ isLoggedIn, onLogin, onOpenSettings, onOpenShare, 
                     </div>
                     <div className="h-2 rounded-full bg-muted overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
+                        className="h-full rounded-full bg-primary transition-all duration-300"
                         style={{ width: `${Math.min(100, upgradeProgress)}%` }}
                       />
                     </div>
@@ -278,7 +278,7 @@ export function ProfilePage({ isLoggedIn, onLogin, onOpenSettings, onOpenShare, 
                   <button
                     onClick={startUpgrade}
                     disabled={upgradeProgress > 0}
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60"
+                    className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60"
                   >
                     {upgradeProgress > 0 ? "下载中..." : "立即升级"}
                   </button>
@@ -311,7 +311,7 @@ export function ProfilePage({ isLoggedIn, onLogin, onOpenSettings, onOpenShare, 
                 </p>
                 <button
                   onClick={() => { setShowUpgrade(false); setVersionResult(null); }}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all"
+                  className="w-full py-3 rounded-xl bg-emerald-500 text-white text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all"
                 >
                   好的
                 </button>

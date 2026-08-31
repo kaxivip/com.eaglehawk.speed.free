@@ -143,6 +143,7 @@ export function AccelerateButton({ isConnected, isConnecting, onToggle, hideButt
                   y="38"
                   width="200"
                   height="200"
+                  opacity={unconnectedStyle === "eagle" ? "0.7" : "1"}
                   preserveAspectRatio="xMidYMid meet"
                 />
               ) : (
@@ -182,10 +183,10 @@ export function AccelerateButton({ isConnected, isConnecting, onToggle, hideButt
             "w-[85%] max-w-[360px] h-[55px] rounded-2xl flex items-center justify-center gap-2.5 mt-2",
             "text-lg font-normal tracking-wide transition-all duration-300 active:scale-[0.96]",
             isConnected
-              ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_4px_30px_hsl(150_80%_50%/0.3)]"
+              ? "bg-emerald-500 text-white"
               : isConnecting
-              ? "bg-gradient-to-r from-primary/70 to-accent/70 text-primary-foreground shadow-[0_4px_30px_hsl(38_92%_55%/0.25)]"
-              : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[0_4px_30px_hsl(38_92%_55%/0.35)]"
+              ? "bg-primary/70 text-primary-foreground"
+              : "bg-primary text-primary-foreground"
           )}
         >
                     {isConnected ? <Square className="w-5 h-5" fill="currentColor" /> : <Zap className="w-5 h-5" fill="currentColor" />}

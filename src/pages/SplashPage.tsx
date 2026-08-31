@@ -1,17 +1,19 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface SplashPageProps {
   onFinish: () => void
 }
 
 export function SplashPage({ onFinish }: SplashPageProps) {
+  const [showHint, setShowHint] = useState(false)
+
   useEffect(() => {
-    const timer = setTimeout(onFinish, 3000)
-    return () => clearTimeout(timer)
-  }, [onFinish])
+    const hintTimer = setTimeout(() => setShowHint(true), 1500)
+    return () => clearTimeout(hintTimer)
+  }, [])
 
   return (
-    <div className="w-full h-full bg-ocean-gradient flex flex-col items-center justify-start pt-[32%] relative overflow-hidden">
+    <div onClick={onFinish} className="w-full h-full bg-ocean-gradient flex flex-col items-center justify-start pt-[32%] relative overflow-hidden cursor-pointer">
       {/* Ambient particles */}
       {[...Array(12)].map((_, i) => (
         <div
@@ -56,6 +58,12 @@ export function SplashPage({ onFinish }: SplashPageProps) {
         </div>
       </div>
 
+      {/* Click hint */}
+      {showHint && (
+        <div className="absolute bottom-[15%] left-0 right-0 flex justify-center animate-fade-in">
+          <span className="text-xs text-muted-foreground/60 tracking-wide">点击任意位置进入</span>
+        </div>
+      )}
     </div>
   )
 }

@@ -101,7 +101,7 @@ export function SharePage({ onBack, onOpenShareDetail }: SharePageProps) {
             className={`w-full py-3.5 rounded-xl font-medium text-sm transition-all duration-200 active:scale-[0.98] ${
               copied
                 ? "bg-status-connected/15 text-status-connected border border-status-connected/20"
-                : "bg-gradient-to-r from-status-warning via-primary to-accent text-primary-foreground hover:opacity-90"
+                : "bg-primary text-primary-foreground hover:opacity-90"
             }`}
           >
             {copied ? "已复制到剪贴板" : "复制邀请文案，分享给好友"}

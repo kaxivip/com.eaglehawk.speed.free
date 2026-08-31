@@ -136,7 +136,7 @@ export function HomePage(p: HomePageProps) {
             </div>
             <button
               onClick={p.onToggleConnect}
-              className="w-full h-[55px] rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-center gap-2.5 text-base font-semibold shadow-[0_4px_30px_hsl(150_80%_50%/0.3)] active:scale-[0.97] transition-all"
+              className="w-full h-[55px] rounded-2xl bg-emerald-500 text-white flex items-center justify-center gap-2.5 text-base font-semibold active:scale-[0.97] transition-all"
             >
               <Pause className="w-5 h-5" fill="currentColor" />
               <span>停止加速</span>
@@ -208,8 +208,8 @@ export function HomePage(p: HomePageProps) {
                 "w-full h-[60px] rounded-2xl flex items-center justify-center gap-3",
                 "text-lg font-normal tracking-wide transition-all duration-300 active:scale-[0.97]",
                 p.isConnecting
-                  ? "bg-gradient-to-r from-primary/70 to-accent/70 text-primary-foreground"
-                  : "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[0_6px_36px_hsl(38_92%_55%/0.4)]"
+                  ? "bg-primary/70 text-primary-foreground"
+                  : "bg-primary text-primary-foreground"
               )}
             >
               <Zap className="w-5 h-5" fill="currentColor" />

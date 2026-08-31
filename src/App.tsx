@@ -321,7 +321,7 @@ export default function App() {
                   localStorage.setItem("privacy_agreed", "1");
                   setStage("main");
                 }}
-                className="w-full h-12 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold shadow-[0_4px_20px_hsl(38_92%_55%/0.3)] hover:opacity-95 active:scale-[0.98] transition-all"
+                className="w-full h-12 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-95 active:scale-[0.98] transition-all"
               >
                 同意并继续
               </button>
